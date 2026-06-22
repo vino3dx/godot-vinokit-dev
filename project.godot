@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="GodotKit"
+config/tags=PackedStringArray("demo")
 run/main_scene="uid://dy6vymg41wb00"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 boot_splash/show_image=false
@@ -20,7 +21,7 @@ config/icon="uid://b5pt8eyhh83e0"
 
 AssetLoader="*uid://d05jpe5vdvjkp"
 ConfigLoader="*uid://cwtii0bqp6n1v"
-LicenseManager="uid://dy4jnbqs1mu1q"
+LicenseManager="*uid://dy4jnbqs1mu1q"
 
 [editor_plugins]
 

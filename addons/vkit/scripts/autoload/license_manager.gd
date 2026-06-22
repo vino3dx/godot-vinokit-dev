@@ -147,40 +147,57 @@ func _check_expire(expire:String) -> int:
 	return -1    # 已过期
 
 
-# =========================
-# 主入口：检查授权
-# =========================
+# 计算到期留存天数（返回：>=0 为剩余天数，-1 为已过期，-2 为日期异常）
+func _get_days_left(expire: String) -> int:
+	if not is_valid_date(expire):
+		return -2
+
+	var today = Time.get_date_string_from_system(true)
+	if not is_valid_date(today):
+		return -2
+
+	# 将日期补全为标准的 ISO 时间戳格式进行秒数转换
+	var t_stamp = Time.get_unix_time_from_datetime_string(today + "T00:00:00")
+	var e_stamp = Time.get_unix_time_from_datetime_string(expire + "T00:00:00")
+
+	if t_stamp > e_stamp:
+		return -1 # 已过期
+
+	# 计算秒数差并转换为天数
+	return int((e_stamp - t_stamp) / 86400)
+
+
+# 检查授权主入口（替换原有的 check_license）
 func check_license() -> bool:
 	var path = get_license_path()
-	
 	if not FileAccess.file_exists(path):
-		print("[LSM] config missing")      # 找不到文件
+		print("[LSM] config missing")
 		return false
 	
 	var raw = read_file(path)
 	if raw == "":
-		print("[LSM] config empty")        # 文件为空
+		print("[LSM] config empty")
 		return false
 	
 	var decrypted = decrypt(raw)
 	if decrypted == "":
-		print("[LSM] config unreadable")   # 解密失败
+		print("[LSM] config unreadable")
 		return false
 	
 	var data = parse_json(decrypted)
 	if data.is_empty() or not data.has("expire"):
-		print("[LSM] config invalid")      # JSON 异常
+		print("[LSM] config invalid")
 		return false
 	
-	var status = _check_expire(data["expire"])
+	# 获取并判断剩余天数
+	var days_left = _get_days_left(data["expire"])
 	
-	match status:
-		1:
-			print("[LSM] runtime ok")      # 授权有效
-			return true
-		-1:
-			print("[LSM] runtime end")     # 授权过期
-			return false
-		_:
-			print("[LSM] runtime err")     # 日期异常
-			return false
+	if days_left >= 0:
+		print("[LSM] runtime ok | expire: %s | days left: %d days" % [data["expire"], days_left])
+		return true
+	elif days_left == -1:
+		print("[LSM] runtime end")
+		return false
+	else:
+		print("[LSM] runtime err")
+		return false
