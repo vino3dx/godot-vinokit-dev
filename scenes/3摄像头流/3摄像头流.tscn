@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dl1vcu2u4lprg"]
+
+[ext_resource type="Script" uid="uid://bnt5j687rj8st" path="res://addons/vkit/scripts/camera/camera_feed_view.gd" id="1_jdfc5"]
+
+[node name="Control" type="Control" unique_id=1556547958]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CameraFeedView" type="Control" parent="." unique_id=1244310135]
+anchors_preset = 0
+offset_right = 856.0
+offset_bottom = 487.0
+script = ExtResource("1_jdfc5")
+metadata/_custom_type_script = "uid://bnt5j687rj8st"

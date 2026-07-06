@@ -17,12 +17,6 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://b5pt8eyhh83e0"
 
-[autoload]
-
-AssetLoader="*uid://d05jpe5vdvjkp"
-ConfigLoader="*uid://cwtii0bqp6n1v"
-LicenseManager="*uid://dy4jnbqs1mu1q"
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/vkit/plugin.cfg")
