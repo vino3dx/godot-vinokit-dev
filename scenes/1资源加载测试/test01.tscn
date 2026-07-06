@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dy6vymg41wb00"]
 
 [ext_resource type="Script" uid="uid://dh15h7f3xt58s" path="res://scenes/1资源加载测试/test_01.gd" id="1_fs4kt"]
+[ext_resource type="Script" uid="uid://blln6eg0jw8lf" path="res://addons/vkit/scripts/tools/class_explorer_tool.gd" id="2_27lth"]
 
 [node name="Test01" type="Node" unique_id=1003421054]
 script = ExtResource("1_fs4kt")
@@ -57,6 +58,10 @@ theme_override_font_sizes/font_size = 57
 text = "视频1"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=190805951]
+
+[node name="ClassExplorerTool" type="Node" parent="." unique_id=1441847842]
+script = ExtResource("2_27lth")
+metadata/_custom_type_script = "uid://blln6eg0jw8lf"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
