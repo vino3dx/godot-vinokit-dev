@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://gax80bahtrm7"]
+
+[ext_resource type="Shader" uid="uid://dbbowck17crtp" path="res://addons/vinokit/shaders/vino_sweep_light.gdshader" id="1_x67dg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mwrmu"]
+shader = ExtResource("1_x67dg")
+shader_parameter/blend_mode = 1
+shader_parameter/progress = 0.9550000691125
+shader_parameter/angle_degrees = 30.0
+shader_parameter/shine_width = 0.23500001046398
+shader_parameter/shine_softness = 0.04600000148648
+shader_parameter/shine_color = Color(0, 0.53952754, 0.53952736, 0.105882354)
+shader_parameter/shine_intensity = 1.0
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_3er4v"]
+
+[node name="Control" type="Control" unique_id=1477839113]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1544932921]
+material = SubResource("ShaderMaterial_mwrmu")
+layout_mode = 0
+offset_left = 230.0
+offset_top = 84.0
+offset_right = 843.0
+offset_bottom = 521.0
+texture = SubResource("PlaceholderTexture2D_3er4v")

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dl1vcu2u4lprg"]
 
-[ext_resource type="Script" uid="uid://bnt5j687rj8st" path="res://addons/vkit/scripts/camera/camera_feed_view.gd" id="1_jdfc5"]
+[ext_resource type="Script" uid="uid://bnt5j687rj8st" path="res://addons/vinokit/classes/camera_feed_view.gd" id="1_jdfc5"]
 
 [node name="Control" type="Control" unique_id=1556547958]
 layout_mode = 3

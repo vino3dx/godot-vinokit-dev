@@ -12,14 +12,20 @@ config_version=5
 
 config/name="GodotKit"
 config/tags=PackedStringArray("demo")
-run/main_scene="uid://dy6vymg41wb00"
+run/main_scene="uid://gax80bahtrm7"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://b5pt8eyhh83e0"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/vkit/plugin.cfg")
+enabled=PackedStringArray("res://addons/vinokit/plugin.cfg", "res://addons/vkit/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/vinokit/": "green"
+}
 
 [physics]
 

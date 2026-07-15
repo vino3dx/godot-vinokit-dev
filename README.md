@@ -36,8 +36,8 @@
 
 1.  克隆本仓库到你的项目 `addons/` 目录下：
 ```bash
-    git clone [https://github.com/your-username/godot-kit.git](https://github.com/your-username/godot-kit.git)
-    ```
+	git clone [https://github.com/your-username/godot-kit.git](https://github.com/your-username/godot-kit.git)
+	```
 2.  在 Godot 编辑器中前往 `Project Settings -> Plugins`。
 3.  找到 **Godot-Kit** 并勾选 `Enable`。
 
@@ -48,4 +48,4 @@
 var loader = ExternalLoader.new()
 var texture = loader.load_texture("C:/Exhibition/Assets/logo.png")
 if texture:
-    $Sprite2D.texture = texture
+	$Sprite2D.texture = texture
