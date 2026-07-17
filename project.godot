@@ -17,9 +17,14 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://b5pt8eyhh83e0"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/vinokit/plugin.cfg", "res://addons/vkit/plugin.cfg")
+enabled=PackedStringArray("res://addons/vinokit/plugin.cfg")
 
 [file_customization]
 

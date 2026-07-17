@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://dvfhvl5lrb2ee"]
+
+[ext_resource type="Shader" uid="uid://bhed45rojs1pa" path="res://scenes/1橡皮擦工具/vino_mask_alpha.gdshader" id="1_a0um3"]
+[ext_resource type="Texture2D" uid="uid://cuqvfa8rcjx3e" path="res://scenes/1橡皮擦工具/mask.png" id="2_sreeq"]
+[ext_resource type="Script" uid="uid://cw7pnshluodft" path="res://scenes/1橡皮擦工具/mask_erase_tool.gd" id="3_sreeq"]
+[ext_resource type="Texture2D" uid="uid://b5pt8eyhh83e0" path="res://GodotKit.png" id="4_f2jxc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_f2jxc"]
+font_size = 399
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f2jxc"]
+shader = ExtResource("1_a0um3")
+shader_parameter/mask_texture = ExtResource("2_sreeq")
+
+[node name="MaskEraseTool" type="Control" unique_id=94242405]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="." unique_id=350047432]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "擦除完了"
+label_settings = SubResource("LabelSettings_f2jxc")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1788508242]
+material = SubResource("ShaderMaterial_f2jxc")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_f2jxc")
+script = ExtResource("3_sreeq")
