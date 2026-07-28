@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bmoxn8k1vi2bp"]
 
-[ext_resource type="Script" uid="uid://che5slh7pmrv7" path="res://addons/vinokit/classes/vino_animation_button.gd" id="1_sct6a"]
+[ext_resource type="Script" uid="uid://che5slh7pmrv7" path="res://addons/vinokit/modules/library/vino_animation_button.gd" id="1_sct6a"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ws48j"]
 

@@ -1,4 +1,3 @@
-class_name WindowController
 extends Node
 
 ## 窗口控制器：多显示器切换、窗口定位、居中、边界夹紧，以及 无边框/窗口化/全屏/ 独占全屏四种模式的运行时切换。

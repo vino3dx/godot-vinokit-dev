@@ -17,6 +17,10 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://b5pt8eyhh83e0"
 
+[autoload]
+
+LicenseManager="*uid://dy4jnbqs1mu1q"
+
 [display]
 
 window/size/viewport_width=1920
@@ -24,12 +28,12 @@ window/size/viewport_height=1080
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/vinokit/plugin.cfg")
+enabled=PackedStringArray("res://addons/license_manager/plugin.cfg")
 
 [file_customization]
 
 folder_colors={
-"res://addons/vinokit/": "green"
+"res://addons/license_manager/": "red"
 }
 
 [physics]

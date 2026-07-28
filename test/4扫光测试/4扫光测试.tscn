@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://gax80bahtrm7"]
 
-[ext_resource type="Shader" uid="uid://dbbowck17crtp" path="res://addons/vinokit/shaders/vino_sweep_light.gdshader" id="1_x67dg"]
+[ext_resource type="Shader" uid="uid://dbbowck17crtp" path="res://resource/shaders/vino_sweep_light.gdshader" id="1_x67dg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwrmu"]
 shader = ExtResource("1_x67dg")
