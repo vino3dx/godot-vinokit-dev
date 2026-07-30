@@ -1,11 +1,9 @@
+class_name VinoConfigLoader
 extends Node
-# [b]ConfigLoader[/b] —— Autoload 全局配置加载器
-#
-# 启动时自动读取 data/config.ini，供其他 Autoload 和场景脚本查询。
-#
-# 【查询接口】
-#   ConfigLoader.get_value("AssetLoader", "base_path", "")
-#   ConfigLoader.get_value("MyScene", "title", "默认标题")
+## [b]VinoConfigLoader - 全局配置文件加载器[/b]
+##
+## 建议 Autoload 挂载名称：[b]VinoConfig[/b]
+## 可以在任意地方直接使用 VinoConfig.get_value("Section", "Key", default)
 
 signal config_loaded
 
@@ -14,37 +12,38 @@ signal config_loaded
 
 var _config := ConfigFile.new()
 var is_loaded: bool = false
+var exe_dir: String = ""
 
 # ==============================
-# 初始化
+# 生命周期
 # ==============================
 func _ready() -> void:
+	if OS.has_feature("editor"):
+		exe_dir = "res://"
+	else:
+		exe_dir = OS.get_executable_path().get_base_dir()
+		
 	_load()
 
 func _load() -> void:
-	# 重置，防止热重载时数据叠加
 	_config = ConfigFile.new()
 	is_loaded = false
 
-	var path: String
-	if OS.has_feature("editor"):
-		path = "res://data/config.ini"
-	else:
-		path = OS.get_executable_path().get_base_dir() + "/data/config.ini"
+	var real_path := resolve_path(config_file_path)
 
-	if not FileAccess.file_exists(path):
-		push_error("[ConfigLoader] 未找到配置文件: " + path)
+	if not FileAccess.file_exists(real_path):
+		push_error("[VinoConfigLoader] 未找到配置文件: " + real_path)
 		return
 
-	var file := FileAccess.open(path, FileAccess.READ)
+	var file := FileAccess.open(real_path, FileAccess.READ)
 	if not file:
-		push_error("[ConfigLoader] 无法打开配置文件: " + path)
+		push_error("[VinoConfigLoader] 无法打开配置文件: " + real_path)
 		return
 
 	var raw := file.get_as_text().replace("\\", "/")
 	file.close()
 
-	# 逐行自动补引号
+	# 逐行自动补引号预处理 [cite: 8]
 	var lines := raw.split("\n")
 	var fixed: PackedStringArray = []
 	for line in lines:
@@ -52,27 +51,49 @@ func _load() -> void:
 	raw = "\n".join(fixed)
 
 	if _config.parse(raw) != OK:
-		push_error("[ConfigLoader] 解析失败，请检查 config.ini 格式（需 UTF-8）")
+		push_error("[VinoConfigLoader] 解析失败，请检查 config.ini 格式（需 UTF-8）")
 		return
 
 	is_loaded = true
-	_log("✅ 加载成功，小节: " + str(_config.get_sections()))
+	_log("✅ 配置加载成功，节点小节: " + str(_config.get_sections()))
 	config_loaded.emit()
+
+# ==============================
+# 通用自适应路径解析（框架核心方法）
+# ==============================
+func resolve_path(path: String) -> String:
+	if path.is_empty():
+		return ""
+	# 1. 绝对路径直接返回
+	if path.is_absolute_path():
+		return path
+		
+	# 2. 编辑器模式下
+	if OS.has_feature("editor"):
+		if not path.begins_with("res://"):
+			return "res://".path_join(path)
+		return path
+	else:
+		# 3. 打包导出后：优先匹配 exe 同目录外部文件
+		var external_path := exe_dir.path_join(path.replace("res://", ""))
+		if FileAccess.file_exists(external_path):
+			return external_path
+		# 4. 外部不存在，回退到包内 res://
+		if not path.begins_with("res://"):
+			return "res://".path_join(path)
+		return path
 
 # ==============================
 # 对外查询接口
 # ==============================
-## 获取配置值，找不到时返回 default_value
 func get_value(section: String, key: String, default_value: Variant = null) -> Variant:
 	if not is_loaded:
 		return default_value
 	return _config.get_value(section, key, default_value)
 
-## 判断某小节是否存在
 func has_section(section: String) -> bool:
 	return is_loaded and _config.has_section(section)
 
-## 获取某小节所有键（供遍历用）
 func get_section_keys(section: String) -> Array:
 	if not is_loaded or not _config.has_section(section):
 		return []
@@ -103,4 +124,4 @@ func _fix_line(line: String) -> String:
 
 func _log(msg: String) -> void:
 	if debug_print:
-		print("[ConfigLoader] ", msg)
+		print("[VinoConfigLoader] ", msg)

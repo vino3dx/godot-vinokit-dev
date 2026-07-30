@@ -1,24 +1,29 @@
 @tool
 extends EditorPlugin
 
-const LICENSE_SINGLETON := "LicenseManager"
-const LICENSE_SCRIPT := "res://addons/vinokit/modules/license/license_manager.gd"
-const DOCK_SCRIPT := "res://addons/vinokit/dock/vinokit_dock.gd"
+# 全局单例挂载名与脚本路径
+const CONFIG_SINGLETON := "VinoConfig"
+const CONFIG_SCRIPT := "res://addons/vinokit/core/vino_config_loader.gd"
 
-var dock: Control
+const ASSET_SINGLETON := "VinoAssets"
+const ASSET_SCRIPT := "res://addons/vinokit/core/vino_asset_loader.gd"
 
+const WINDOW_SINGLETON := "VinoWindow"
+const WINDOW_SCRIPT := "res://addons/vinokit/core/vino_window_controller.gd"
 
 func _enter_tree() -> void:
-	if not ProjectSettings.has_setting("autoload/" + LICENSE_SINGLETON):
-		add_autoload_singleton(LICENSE_SINGLETON, LICENSE_SCRIPT)
+	if not ProjectSettings.has_setting("autoload/" + CONFIG_SINGLETON):
+		add_autoload_singleton(CONFIG_SINGLETON, CONFIG_SCRIPT)
 
-	dock = preload("res://addons/vinokit/dock/vinokit_dock.gd").new()
-	add_control_to_dock(DOCK_SLOT_RIGHT_UL, dock)
+	if not ProjectSettings.has_setting("autoload/" + ASSET_SINGLETON):
+		add_autoload_singleton(ASSET_SINGLETON, ASSET_SCRIPT)
+		
+	if not ProjectSettings.has_setting("autoload/" + WINDOW_SINGLETON):
+		add_autoload_singleton(WINDOW_SINGLETON, WINDOW_SCRIPT)
 
-	print("【vinokit】已加载,控制面板已挂载到右侧 Dock")
-
+	print("【VinoKit】核心库已加载：[VinoConfig] 与 [VinoAssets] 服务就绪。")
 
 func _exit_tree() -> void:
-	if dock:
-		remove_control_from_docks(dock)
-		dock.queue_free()
+	remove_autoload_singleton(CONFIG_SINGLETON)
+	remove_autoload_singleton(ASSET_SINGLETON)
+	print("【VinoKit】核心库已卸载。")

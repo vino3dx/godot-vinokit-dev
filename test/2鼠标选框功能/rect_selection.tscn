@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://c1jarnkq3ubjy"]
+
+[ext_resource type="Script" uid="uid://bd413golt7pjj" path="res://test/2鼠标选框功能/rect_selection.gd" id="1_5b7sw"]
+
+[node name="RectSelection" type="Node2D" unique_id=116276358]
+script = ExtResource("1_5b7sw")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1134082530]
+closed = true
+default_color = Color(0.98039216, 0.18431373, 0.16862746, 0.85490197)
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=1210858838]
+color = Color(0.28235295, 1, 1, 0.4392157)

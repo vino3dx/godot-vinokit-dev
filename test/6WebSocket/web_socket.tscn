@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cgj1egfxcebxu"]
+
+[ext_resource type="Script" uid="uid://dqi4c1p6nrlo1" path="res://test/6WebSocket/web_socket.gd" id="1_wfvg3"]
+
+[node name="WebSocket" type="Control" unique_id=1136795352]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wfvg3")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1457037005]
+layout_mode = 1
+offset_right = 1440.0
+offset_bottom = 1081.0
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 79
+text = "【这是显示文字的地方】"
+scroll_following = true
+scroll_following_visible_characters = true
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=494272273]
+layout_mode = 0
+offset_left = 1440.0
+offset_top = 419.0
+offset_right = 1920.0
+offset_bottom = 626.0
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 55
+placeholder_text = "这是示例文字"
+
+[node name="Button" type="Button" parent="." unique_id=1512029804]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 1440.0
+offset_top = 630.0
+offset_right = 1920.0
+offset_bottom = 837.0
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.13333334, 0.8745098, 0.8745098, 1)
+theme_override_font_sizes/font_size = 107
+text = "发送"

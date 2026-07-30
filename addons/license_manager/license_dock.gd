@@ -8,7 +8,7 @@ var status_label: Label
 
 
 func _ready() -> void:
-	name = "授权许可"
+	name = "授权"
 
 	var vbox := VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 8)
@@ -34,22 +34,29 @@ func _ready() -> void:
 
 func _on_toggled(pressed: bool) -> void:
 	var config := ConfigFile.new()
+	# 加载已有配置，保留其他可能的配置项
 	config.load(LICENSE_CONFIG_PATH)
 	config.set_value("license", "enabled", pressed)
-	config.save(LICENSE_CONFIG_PATH)
+	
+	# 保存配置到文件
+	var err = config.save(LICENSE_CONFIG_PATH)
+	if err != OK:
+		push_error("【LSM】保存配置文件失败: ", err)
+		
 	_refresh()
 
 
 func _refresh() -> void:
 	var config := ConfigFile.new()
 	var err := config.load(LICENSE_CONFIG_PATH)
-	var enabled: bool = false
+	var enabled: bool = true
 
-	if err != OK:
-		config.set_value("license", "enabled", false)
-		config.save(LICENSE_CONFIG_PATH)
+	if err == OK:
+		enabled = config.get_value("license", "enabled", true)
 	else:
-		enabled = config.get_value("license", "enabled", false)
+		# 首次初始化配置文件
+		config.set_value("license", "enabled", true)
+		config.save(LICENSE_CONFIG_PATH)
 
 	checkbox.set_pressed_no_signal(enabled)
 

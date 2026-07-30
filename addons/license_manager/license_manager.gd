@@ -39,18 +39,18 @@ func get_license_path() -> String:
 
 
 # =========================
-# 读取模块自身开关(不依赖 ProjectSettings)
+# 读取模块自身开关
 # =========================
 func _is_module_enabled() -> bool:
 	var config := ConfigFile.new()
 	var err := config.load(LICENSE_CONFIG_PATH)
 
-	if err != OK:
-		config.set_value("license", "enabled", false)
-		config.save(LICENSE_CONFIG_PATH)
-		return false
+	# 如果配置文件存在，优先读取里面的配置项
+	if err == OK:
+		return config.get_value("license", "enabled", true)
 
-	return config.get_value("license", "enabled", false)
+	# 如果不存在配置文件（例如首次使用），默认启用
+	return true
 
 
 # =========================
@@ -202,57 +202,64 @@ func _check_and_update_last_time(today_str: String) -> bool:
 
 
 # =========================
-# 检查授权主入口 (已整合最高时间记录校验)
+# 检查授权主入口 (隐晦日志版)
 # =========================
 func check_license() -> bool:
 	var path = get_license_path()
 	if not FileAccess.file_exists(path):
-		print("[LSM] 错误: 找不到 license.dat 文件")
+		print("[SYS/Core] Core system initialize failed (Err: 0x011)") # 原: 找不到 license.dat
 		return false
 	
 	var raw = read_file(path)
 	if raw.is_empty():
-		print("[LSM] 错误: license.dat 内容为空")
+		print("[SYS/Core] Core system initialize failed (Err: 0x012)") # 原: 文件为空
 		return false
 	
 	var decrypted = decrypt(raw)
 	if decrypted.is_empty():
-		print("[LSM] 错误: 解密失败，密文损坏或密钥不匹配")
+		print("[SYS/Core] Security handshake failed (Err: 0x021)") # 原: 解密失败/密钥不匹配
 		return false
 	
 	var data = parse_json(decrypted)
 	if data.is_empty() or not data.has("expire") or not data.has("issue"):
-		print("[LSM] 错误: 授权数据 JSON 格式无效")
+		print("[SYS/Core] Configuration payload invalid (Err: 0x031)") # 原: JSON格式无效
 		return false
 	
 	var issue_date: String = data["issue"]
 	var expire_date: String = data["expire"]
 	
 	if not is_valid_date(issue_date) or not is_valid_date(expire_date):
-		print("[LSM] 错误: 授权文件中的日期格式不合法")
+		print("[SYS/Core] Timestamp format validation error (Err: 0x032)") # 原: 日期格式无效
 		return false
 	
 	var today = Time.get_date_string_from_system(true)
 	
-	# 1. 校验授权文件内部逻辑 (签发时间不得晚于到期时间)
+	# 1. 校验授权逻辑
 	if _to_unix(issue_date) > _to_unix(expire_date):
-		print("[LSM] 错误: 授权文件逻辑异常 (签发时间晚于到期时间)")
+		print("[SYS/Core] Logic sequence anomaly detected (Err: 0x041)")
 		return false
 	
-	# 2. 基础防回拨：系统时间绝对不能早于签发日
+	# 2. 时钟回拨校验 (基础)
 	if _to_unix(today) < _to_unix(issue_date):
-		print("[LSM] 警告: 检测到系统时钟回拨！签发日: %s, 系统日: %s" % [issue_date, today])
+		print("[SYS/Core] System clock synchronization fault (Err: 0x051)") # 原: 检测到时间回拨
 		return false
 		
-	# 3. 进阶防回拨：系统时间绝对不能早于上一次成功运行的时间
+	# 3. 时钟回拨校验 (进阶)
 	if not _check_and_update_last_time(today):
+		print("[SYS/Core] Runtime record mismatch (Err: 0x052)") # 原: 历史运行时间异常
 		return false
 	
-	# 4. 最终判定剩余天数
+	# 4. 剩余天数计算与隐晦输出
 	var days_left = _get_days_left(expire_date)
 	if days_left >= 0:
-		print("[LSM] 验证通过 | 到期日: %s | 剩余天数: %d 天" % [expire_date, days_left])
+		# 解析到期日期的 MM月DD日 (例如 2026-08-06 -> 0806)
+		var expire_parts = expire_date.split("-")
+		var mmdd = expire_parts[1] + expire_parts[2]
+		
+		# 格式化状态码：0806x007
+		var status_code = "%sx%03d" % [mmdd, days_left]
+		print("[SYS/Core] Service node # synced successfully (Status: %s)." % status_code)
 		return true
 	else:
-		print("[LSM] 验证失败: 授权已过期")
+		print("[SYS/Core] Service session expired (Err: 0x099)") # 原: 已过期
 		return false
