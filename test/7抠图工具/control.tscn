@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://dp3xw8i23bjct"]
+
+[ext_resource type="Script" uid="uid://dx0v64vrsxb76" path="res://test/7抠图工具/control.gd" id="1_hutk2"]
+[ext_resource type="Shader" uid="uid://qkubyocsh17a" path="res://test/7抠图工具/control.gdshader" id="2_e8qvt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wvhbo"]
+shader = ExtResource("2_e8qvt")
+shader_parameter/key_color = Color(0, 1, 0, 1)
+shader_parameter/threshold = 0.4
+shader_parameter/smoothness = 0.1
+shader_parameter/spill_reduction = true
+
+[node name="Control" type="Control" unique_id=1167432128]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hutk2")
+
+[node name="FileDialog" type="FileDialog" parent="." unique_id=1976737324]
+oversampling_override = 1.0
+title = "Open a File"
+position = Vector2i(200, 200)
+visible = true
+file_mode = 0
+access = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=83208137]
+material = SubResource("ShaderMaterial_wvhbo")
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 632.0
+offset_bottom = 311.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="." unique_id=1388818312]
+layout_mode = 0
+offset_left = 1508.0
+offset_top = 141.0
+offset_right = 1741.0
+offset_bottom = 290.0
+
+[node name="HSlider" type="HSlider" parent="." unique_id=452279369]
+layout_mode = 0
+offset_left = 1477.0
+offset_top = 366.0
+offset_right = 1834.0
+offset_bottom = 427.0

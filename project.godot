@@ -13,15 +13,13 @@ config_version=5
 config/name="GodotKit"
 config/tags=PackedStringArray("demo")
 run/main_scene="uid://gax80bahtrm7"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://b5pt8eyhh83e0"
 
 [autoload]
 
 LicenseManager="*uid://dy4jnbqs1mu1q"
-VinoConfig="*uid://cwtii0bqp6n1v"
-VinoAssets="*uid://d05jpe5vdvjkp"
 VinoWindow="*uid://b440mhg0gw5ot"
 
 [display]
@@ -31,7 +29,7 @@ window/size/viewport_height=1080
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/license_manager/plugin.cfg", "res://addons/vinokit/plugin.cfg")
+enabled=PackedStringArray("res://addons/license_manager/plugin.cfg")
 
 [file_customization]
 
