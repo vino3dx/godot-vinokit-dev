@@ -22,8 +22,8 @@ script = ExtResource("1_hutk2")
 [node name="FileDialog" type="FileDialog" parent="." unique_id=1976737324]
 oversampling_override = 1.0
 title = "Open a File"
-position = Vector2i(200, 200)
-visible = true
+initial_position = 1
+size = Vector2i(800, 600)
 file_mode = 0
 access = 2
 
@@ -48,3 +48,22 @@ offset_left = 1477.0
 offset_top = 366.0
 offset_right = 1834.0
 offset_bottom = 427.0
+
+[node name="BtnOpenFile" type="Button" parent="." unique_id=1030415956]
+layout_mode = 0
+offset_left = 1468.0
+offset_top = 476.0
+offset_right = 1631.0
+offset_bottom = 579.0
+text = "打开文件"
+
+[node name="BtnSaveFile" type="Button" parent="." unique_id=629517270]
+layout_mode = 0
+offset_left = 1672.0
+offset_top = 475.0
+offset_right = 1835.0
+offset_bottom = 578.0
+text = "保存文件"
+
+[connection signal="pressed" from="BtnOpenFile" to="." method="_on_open_button_pressed"]
+[connection signal="pressed" from="BtnSaveFile" to="." method="_on_save_button_pressed"]
