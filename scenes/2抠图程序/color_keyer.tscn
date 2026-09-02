@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dyixq0iutymt1"]
+
+[ext_resource type="Script" uid="uid://c4cehub7t08kr" path="res://scenes/2抠图程序/color_keyer.gd" id="1_fhey2"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_3atjs"]
+
+[node name="ColorKeyer" type="Control" unique_id=1642285226]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fhey2")
+
+[node name="FileDialog" type="FileDialog" parent="." unique_id=229998411]
+oversampling_override = 1.0
+
+[node name="Button" type="Button" parent="." unique_id=1534965995]
+layout_mode = 1
+offset_left = 1309.0
+offset_top = 118.0
+offset_right = 1539.0
+offset_bottom = 221.0
+text = "打开"
+
+[node name="Button2" type="Button" parent="." unique_id=1195476224]
+layout_mode = 1
+offset_left = 1639.0
+offset_top = 118.0
+offset_right = 1869.0
+offset_bottom = 221.0
+text = "关闭"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2108702606]
+layout_mode = 0
+offset_left = 77.0
+offset_top = 161.0
+offset_right = 1247.0
+offset_bottom = 885.0
+texture = SubResource("PlaceholderTexture2D_3atjs")
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="." unique_id=2084691133]
+layout_mode = 0
+offset_left = 1431.0
+offset_top = 288.0
+offset_right = 1778.0
+offset_bottom = 433.0
+
+[node name="HSlider" type="HSlider" parent="." unique_id=1114905602]
+layout_mode = 0
+offset_left = 1396.0
+offset_top = 573.0
+offset_right = 1805.0
+offset_bottom = 690.0
