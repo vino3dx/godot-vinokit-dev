@@ -3,7 +3,7 @@
 [ext_resource type="Shader" uid="uid://bhed45rojs1pa" path="res://scenes/1橡皮擦工具/vino_mask_alpha.gdshader" id="1_a0um3"]
 [ext_resource type="Texture2D" uid="uid://cuqvfa8rcjx3e" path="res://scenes/1橡皮擦工具/mask.png" id="2_sreeq"]
 [ext_resource type="Script" uid="uid://cw7pnshluodft" path="res://scenes/1橡皮擦工具/mask_erase_tool.gd" id="3_sreeq"]
-[ext_resource type="Texture2D" uid="uid://b5pt8eyhh83e0" path="res://GodotKit.png" id="4_f2jxc"]
+[ext_resource type="Texture2D" uid="uid://b5pt8eyhh83e0" path="res://logo.png" id="4_f2jxc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_f2jxc"]
 font_size = 399
