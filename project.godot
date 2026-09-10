@@ -34,7 +34,7 @@ enabled=PackedStringArray("res://addons/license_manager/plugin.cfg")
 [file_customization]
 
 folder_colors={
-"res://addons/license_manager/": "red",
+"res://addons/license/": "red",
 "res://addons/vinokit/": "green"
 }
 
