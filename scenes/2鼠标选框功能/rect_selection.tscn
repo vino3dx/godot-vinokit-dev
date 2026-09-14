@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c1jarnkq3ubjy"]
 
-[ext_resource type="Script" uid="uid://bd413golt7pjj" path="res://test/2鼠标选框功能/rect_selection.gd" id="1_5b7sw"]
+[ext_resource type="Script" uid="uid://bd413golt7pjj" path="res://scenes/2鼠标选框功能/rect_selection.gd" id="1_5b7sw"]
 
 [node name="RectSelection" type="Node2D" unique_id=116276358]
 script = ExtResource("1_5b7sw")

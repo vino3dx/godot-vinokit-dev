@@ -32,7 +32,7 @@ func _load() -> void:
 	var real_path := resolve_path(config_file_path)
 
 	if not FileAccess.file_exists(real_path):
-		push_error("[VinoConfigLoader] 未找到配置文件: " + real_path)
+		push_warning("[VinoConfigLoader] 未找到配置文件: " + real_path)
 		return
 
 	var file := FileAccess.open(real_path, FileAccess.READ)

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dp3xw8i23bjct"]
 
-[ext_resource type="Script" uid="uid://dx0v64vrsxb76" path="res://test/7抠图工具/control.gd" id="1_hutk2"]
-[ext_resource type="Shader" uid="uid://qkubyocsh17a" path="res://test/7抠图工具/control.gdshader" id="2_e8qvt"]
+[ext_resource type="Script" uid="uid://dx0v64vrsxb76" path="res://scenes/7抠图工具/control.gd" id="1_hutk2"]
+[ext_resource type="Shader" uid="uid://qkubyocsh17a" path="res://scenes/7抠图工具/control.gdshader" id="2_e8qvt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wvhbo"]
 shader = ExtResource("2_e8qvt")

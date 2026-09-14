@@ -36,11 +36,9 @@ texture = ExtResource("8_mto06")
 
 [node name="VideoPlayer" type="Control" unique_id=312539549]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
 script = ExtResource("1_u31f3")
 hover_zone_height = 500.0
 auto_close_on_finish = true
@@ -77,7 +75,7 @@ offset_right = 1050.0
 offset_bottom = -155.0
 grow_horizontal = 2
 grow_vertical = 0
-scale = Vector2(1.765, 1.765)
+scale = Vector2(0.815, 0.815)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VideoToolBar" unique_id=601165320]

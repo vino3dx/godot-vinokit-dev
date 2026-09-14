@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="GodotKit"
+config/name="VinoKit"
+config/description="基于Godot引擎开发的组件和插件库"
 config/tags=PackedStringArray("demo")
 run/main_scene="uid://gax80bahtrm7"
 config/features=PackedStringArray("4.7", "GL Compatibility")
@@ -19,7 +20,9 @@ config/icon="uid://b5pt8eyhh83e0"
 
 [autoload]
 
-LicenseManager="*uid://dy4jnbqs1mu1q"
+VinoAssets="*uid://d05jpe5vdvjkp"
+VinoConfig="*uid://cwtii0bqp6n1v"
+VinoData="*uid://bsruml131m8d4"
 VinoWindow="*uid://b440mhg0gw5ot"
 
 [display]
@@ -29,7 +32,7 @@ window/size/viewport_height=1080
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/license_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/vinokit/plugin.cfg")
 
 [file_customization]
 

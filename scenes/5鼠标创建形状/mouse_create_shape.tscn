@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://de4ikhgxy7n1n"]
 
-[ext_resource type="Script" uid="uid://desspyckjlcky" path="res://test/5鼠标创建形状/mouse_create_shape.gd" id="1_ikb0f"]
+[ext_resource type="Script" uid="uid://desspyckjlcky" path="res://scenes/5鼠标创建形状/mouse_create_shape.gd" id="1_ikb0f"]
 
 [node name="MouseCreateShape" type="Node2D" unique_id=2055562480]
 script = ExtResource("1_ikb0f")

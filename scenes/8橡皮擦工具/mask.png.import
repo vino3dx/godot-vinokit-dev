@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cuqvfa8rcjx3e"
-path="res://.godot/imported/mask.png-7544da80216cd792cecd0f874f60127c.ctex"
+path="res://.godot/imported/mask.png-4d339133ee1e4f03df1d835870b18bee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/1橡皮擦工具/mask.png"
-dest_files=["res://.godot/imported/mask.png-7544da80216cd792cecd0f874f60127c.ctex"]
+source_file="res://scenes/8橡皮擦工具/mask.png"
+dest_files=["res://.godot/imported/mask.png-4d339133ee1e4f03df1d835870b18bee.ctex"]
 
 [params]
 

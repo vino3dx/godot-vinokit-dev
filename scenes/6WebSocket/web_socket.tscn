@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cgj1egfxcebxu"]
 
-[ext_resource type="Script" uid="uid://dqi4c1p6nrlo1" path="res://test/6WebSocket/web_socket.gd" id="1_wfvg3"]
+[ext_resource type="Script" uid="uid://dqi4c1p6nrlo1" path="res://scenes/6WebSocket/web_socket.gd" id="1_wfvg3"]
 
 [node name="WebSocket" type="Control" unique_id=1136795352]
 layout_mode = 3
