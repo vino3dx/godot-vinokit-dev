@@ -13,17 +13,17 @@ config_version=5
 config/name="VinoKit"
 config/description="基于Godot引擎开发的组件和插件库"
 config/tags=PackedStringArray("demo")
-run/main_scene="uid://gax80bahtrm7"
+run/main_scene="uid://c5y33cf4q821j"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://b5pt8eyhh83e0"
 
 [autoload]
 
-VinoAssets="*uid://d05jpe5vdvjkp"
-VinoConfig="*uid://cwtii0bqp6n1v"
-VinoData="*uid://bsruml131m8d4"
-VinoWindow="*uid://b440mhg0gw5ot"
+VinoConfig="*uid://dbx3u85qdaqtj"
+VinoAssets="uid://tuop8a38kctm"
+VinoData="uid://bi7usc7grjafd"
+VinoWindow="uid://dim0wegwqd86"
 
 [display]
 

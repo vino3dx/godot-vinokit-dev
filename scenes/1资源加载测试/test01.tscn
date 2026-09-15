@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dy6vymg41wb00"]
 
 [ext_resource type="Script" uid="uid://dh15h7f3xt58s" path="res://scenes/1资源加载测试/test_01.gd" id="1_fs4kt"]
-[ext_resource type="Script" uid="uid://bnt5j687rj8st" path="res://addons/vinokit/ui/vino_camera_feed_view.gd" id="2_27lth"]
+[ext_resource type="Script" uid="uid://byos5fi40421y" path="res://addons/vinokit/ui/vino_camera_feed_view.gd" id="2_27lth"]
 
 [node name="Test01" type="Node" unique_id=1003421054]
 script = ExtResource("1_fs4kt")

@@ -1,29 +1,22 @@
 class_name VinoDataLoader
 extends Node
-## [b]VinoDataLoader - 通用数据读取管理器[/b] 
+## VinoDataLoader - 通用数据读取管理器
 ##
-## 支持 TEXT / JSON / CSV / INI 格式，具备编辑器与导出环境路径自适应特性 
+## 支持 TEXT / JSON / CSV / INI 四种格式，路径解析规则与其余 VinoKit 模块保持一致
 
-enum DataFormat {
-	TEXT,
-	JSON,
-	CSV,
-	INI
-} 
+const TAG := "VinoData"
+
+enum DataFormat { TEXT, JSON, CSV, INI }
 
 @export_group("基础设置")
-@export var data_format: DataFormat = DataFormat.TEXT:
-	set(val):
-		data_format = val
-		update_configuration_warnings() 
-
-@export_file("*.txt", "*.json", "*.csv", "*.ini") var file_path: String = "" 
+@export var data_format: DataFormat = DataFormat.TEXT
+@export_file("*.txt", "*.json", "*.csv", "*.ini") var file_path: String = ""
 
 @export_group("高级设置")
-@export var csv_delimiter: String = "," 
-@export var auto_load_on_ready: bool = true 
+@export var csv_delimiter: String = ","
+@export var auto_load_on_ready: bool = true
 
-## 存储读取后的数据 
+## 读取后的数据；JSON/TEXT 视具体内容而定，CSV 为 Array[Dictionary]，INI 为 Dictionary
 var loaded_data: Variant = null
 
 func _ready() -> void:
@@ -32,91 +25,72 @@ func _ready() -> void:
 
 func load_data() -> Variant:
 	if file_path.is_empty():
-		push_warning("[%s] 未指定读取路径" % name)
+		VinoLogger.warn(TAG, "未指定读取路径")
 		return null
-		
-	var final_path := _get_real_path(file_path)
 
-	if not FileAccess.file_exists(final_path):
-		push_error("❌ [%s] 文件不存在: %s" % [name, final_path])
+	var real_path := VinoPathResolver.resolve_via(file_path, get_node_or_null("/root/VinoConfig"))
+	if not FileAccess.file_exists(real_path):
+		VinoLogger.error(TAG, "文件不存在: " + real_path)
 		return null
 
 	match data_format:
-		DataFormat.TEXT:
-			loaded_data = _read_as_text(final_path)
-		DataFormat.JSON:
-			loaded_data = _read_as_json(final_path)
-		DataFormat.CSV:
-			loaded_data = _read_as_csv(final_path)
-		DataFormat.INI:
-			loaded_data = _read_as_ini(final_path)
+		DataFormat.TEXT: loaded_data = _read_as_text(real_path)
+		DataFormat.JSON: loaded_data = _read_as_json(real_path)
+		DataFormat.CSV: loaded_data = _read_as_csv(real_path)
+		DataFormat.INI: loaded_data = _read_as_ini(real_path)
 
-	if loaded_data != null:
-		print("✅ [%s] 数据加载成功: %s" % [name, final_path])
+	if loaded_data == null:
+		VinoLogger.error(TAG, "数据加载失败: " + real_path)
 	else:
-		push_error("❌ [%s] 数据加载失败: %s" % [name, final_path])
-
+		VinoLogger.info(TAG, "数据加载成功: " + real_path)
 	return loaded_data
 
 func reload() -> Variant:
 	return load_data()
 
-# =========================
-# 读取实现
-# =========================
 func _read_as_text(path: String) -> String:
-	var file = FileAccess.open(path, FileAccess.READ)
-	if not file:
-		return ""
-	return file.get_as_text()
+	var file := FileAccess.open(path, FileAccess.READ)
+	return file.get_as_text() if file else ""
 
 func _read_as_json(path: String) -> Variant:
-	var content = _read_as_text(path)
+	var content := _read_as_text(path)
 	if content.is_empty():
-		push_error("JSON文件为空: %s" % path)
+		VinoLogger.error(TAG, "JSON 文件为空: " + path)
 		return null
-		
-	var result = JSON.parse_string(content)
+	var result: Variant = JSON.parse_string(content)
 	if result == null:
-		push_error("JSON解析失败: %s" % path)
+		VinoLogger.error(TAG, "JSON 解析失败: " + path)
 	return result
 
 func _read_as_csv(path: String) -> Array:
-	var file = FileAccess.open(path, FileAccess.READ)
+	var file := FileAccess.open(path, FileAccess.READ)
 	if not file:
 		return []
-	
+
 	var result: Array = []
-	var headers = file.get_csv_line(csv_delimiter)
-	
+	var headers := file.get_csv_line(csv_delimiter)
 	while not file.eof_reached():
-		var line = file.get_csv_line(csv_delimiter)
+		var line := file.get_csv_line(csv_delimiter)
 		if line.size() < headers.size() or line[0].is_empty():
 			continue
-			
-		var entry = {}
+		var entry := {}
 		for i in range(headers.size()):
 			entry[headers[i]] = _auto_convert(line[i])
 		result.append(entry)
-	
 	return result
 
 func _read_as_ini(path: String) -> Dictionary:
-	var config = ConfigFile.new()
+	var config := ConfigFile.new()
 	if config.load(path) != OK:
-		push_error("INI读取失败: %s" % path)
+		VinoLogger.error(TAG, "INI 读取失败: " + path)
 		return {}
-		
-	var dict = {}
+	var dict := {}
 	for section in config.get_sections():
 		dict[section] = {}
 		for key in config.get_section_keys(section):
 			dict[section][key] = config.get_value(section, key)
 	return dict
 
-# =========================
-# 路径解析（自适应）
-# =========================
 func _auto_convert(value: String) -> Variant:
 	if value.is_valid_int():
 		return int(value)
@@ -124,23 +98,5 @@ func _auto_convert(value: String) -> Variant:
 		return float(value)
 	return value
 
-func _get_real_path(path: String) -> String:
-	var config_node = get_node_or_null("/root/VinoConfig")
-	if config_node and config_node.has_method("resolve_path"):
-		return config_node.resolve_path(path)
-		
-	if path.is_absolute_path():
-		return path
-	if OS.has_feature("editor"):
-		return "res://".path_join(path) if not path.begins_with("res://") else path
-	else:
-		var exe_dir := OS.get_executable_path().get_base_dir()
-		var external_path := exe_dir.path_join(path.replace("res://", ""))
-		if FileAccess.file_exists(external_path):
-			return external_path
-		return path
-
 func _get_configuration_warnings() -> PackedStringArray:
-	if file_path.is_empty():
-		return ["必须指定一个文件路径才能读取数据。"] 
-	return []
+	return ["必须指定一个文件路径才能读取数据。"] if file_path.is_empty() else []

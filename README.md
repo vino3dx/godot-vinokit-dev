@@ -187,11 +187,11 @@ SerialPort
 Godot Project
 │
 └── Godot-Kit
-    ├── Asset
-    ├── Config
-    ├── License
-    ├── UI
-    └── Hardware
+	├── Asset
+	├── Config
+	├── License
+	├── UI
+	└── Hardware
 ```
 
 不需要为了使用 `AssetLoader` 而引入整个框架。
@@ -252,9 +252,9 @@ your-project/
 ```text
 Project
 └── Project Settings
-    └── Plugins
-        └── Godot-Kit
-            └── Enable
+	└── Plugins
+		└── Godot-Kit
+			└── Enable
 ```
 
 ---
@@ -273,7 +273,7 @@ var texture = loader.load_texture(
 )
 
 if texture:
-    $Sprite2D.texture = texture
+	$Sprite2D.texture = texture
 ```
 
 这样图片可以放在：
@@ -281,9 +281,9 @@ if texture:
 ```text
 C:/Exhibition/
 └── Assets/
-    ├── logo.png
-    ├── background.jpg
-    └── poster.png
+	├── logo.png
+	├── background.jpg
+	└── poster.png
 ```
 
 而不需要将这些资源打包进 `.pck`。
@@ -320,10 +320,10 @@ Application/
 ├── Application.pck
 │
 └── Assets/
-    ├── Images/
-    ├── Videos/
-    ├── Audio/
-    └── Config/
+	├── Images/
+	├── Videos/
+	├── Audio/
+	└── Config/
 ```
 
 这样可以将**程序本体与经常变化的展示内容分离**，特别适合展厅项目和 B 端应用。

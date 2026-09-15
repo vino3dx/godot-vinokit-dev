@@ -1,26 +1,25 @@
 @tool
 extends EditorPlugin
+## VinoKit 插件入口：仅负责注册/卸载核心模块的 Autoload 单例。
+## 非核心模块（network / ui / tools / modules 下的节点脚本）无需 Autoload，
+## 按需挂载到场景节点上，或用 class_name 直接 new() 使用即可。
 
-# 使用字典配置所有 Autoload 单例名称与对应的路径
-const AUTOLOADS: Dictionary = {
-	"VinoAssets": "res://addons/vinokit/core/vino_asset_loader.gd",
+const AUTOLOADS := {
 	"VinoConfig": "res://addons/vinokit/core/vino_config_loader.gd",
+	"VinoAssets": "res://addons/vinokit/core/vino_asset_loader.gd",
 	"VinoData": "res://addons/vinokit/core/vino_data_loader.gd",
-	"VinoWindow": "res://addons/vinokit/core/vino_window_controller.gd"
+	"VinoWindow": "res://addons/vinokit/core/vino_window_controller.gd",
 }
 
 func _enter_tree() -> void:
-	for name: String in AUTOLOADS:
-		var script_path: String = AUTOLOADS[name]
-		if not ProjectSettings.has_setting("autoload/" + name):
-			add_autoload_singleton(name, script_path)
-			
-	var names_str := "、".join(AUTOLOADS.keys().map(func(k): return "[%s]" % k))
-	print("【VinoKit】核心库已加载: %s 服务就绪" % names_str)
+	for singleton_name: String in AUTOLOADS:
+		if not ProjectSettings.has_setting("autoload/" + singleton_name):
+			add_autoload_singleton(singleton_name, AUTOLOADS[singleton_name])
 
+	var joined := "、".join(AUTOLOADS.keys().map(func(n): return "[%s]" % n))
+	print("【VinoKit】核心模块已加载: %s" % joined)
 
 func _exit_tree() -> void:
-	for name: String in AUTOLOADS:
-		remove_autoload_singleton(name)
-	
-	print("【VinoKit】核心库已经卸载")
+	for singleton_name: String in AUTOLOADS:
+		remove_autoload_singleton(singleton_name)
+	print("【VinoKit】核心模块已卸载")

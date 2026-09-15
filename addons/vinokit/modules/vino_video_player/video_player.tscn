@@ -1,14 +1,14 @@
-[gd_scene format=3 uid="uid://bjwsic8lr3nw1"]
+[gd_scene load_steps=10 format=3]
 
-[ext_resource type="Texture2D" uid="uid://ohj64v1okdme" path="res://addons/vinokit/modules/vino_video_player/icon/播放_btn.png" id="1_jwnkb"]
-[ext_resource type="Script" uid="uid://bslqacd4holed" path="res://addons/vinokit/modules/vino_video_player/video_player.gd" id="1_u31f3"]
-[ext_resource type="Texture2D" uid="uid://cxagabamb4dcm" path="res://addons/vinokit/modules/vino_video_player/icon/暂停_btn.png" id="2_u31f3"]
-[ext_resource type="Texture2D" uid="uid://ddbnoa142bcoe" path="res://addons/vinokit/modules/vino_video_player/icon/停止_btn.png" id="3_5cvgo"]
-[ext_resource type="Texture2D" uid="uid://da4xkhou151ag" path="res://addons/vinokit/modules/vino_video_player/icon/后退_btn.png" id="4_p8j3h"]
-[ext_resource type="Texture2D" uid="uid://b4sxuw542stua" path="res://addons/vinokit/modules/vino_video_player/icon/前进_btn.png" id="5_qnkht"]
-[ext_resource type="Texture2D" uid="uid://ob07x0qxn4ee" path="res://addons/vinokit/modules/vino_video_player/icon/音量+_btn.png" id="6_tmowu"]
-[ext_resource type="Texture2D" uid="uid://cqnlt5a46k635" path="res://addons/vinokit/modules/vino_video_player/icon/音量-_btn.png" id="7_ei88m"]
-[ext_resource type="Texture2D" uid="uid://cyedpicwrhuiq" path="res://addons/vinokit/modules/vino_video_player/icon/退出_btn.png" id="8_mto06"]
+[ext_resource type="Texture2D" path="res://addons/vinokit/modules/vino_video_player/icon/播放_btn.png" id="1_jwnkb"]
+[ext_resource type="Script" path="res://addons/vinokit/modules/vino_video_player/video_player.gd" id="1_u31f3"]
+[ext_resource type="Texture2D" path="res://addons/vinokit/modules/vino_video_player/icon/暂停_btn.png" id="2_u31f3"]
+[ext_resource type="Texture2D" path="res://addons/vinokit/modules/vino_video_player/icon/停止_btn.png" id="3_5cvgo"]
+[ext_resource type="Texture2D" path="res://addons/vinokit/modules/vino_video_player/icon/后退_btn.png" id="4_p8j3h"]
+[ext_resource type="Texture2D" path="res://addons/vinokit/modules/vino_video_player/icon/前进_btn.png" id="5_qnkht"]
+[ext_resource type="Texture2D" path="res://addons/vinokit/modules/vino_video_player/icon/音量+_btn.png" id="6_tmowu"]
+[ext_resource type="Texture2D" path="res://addons/vinokit/modules/vino_video_player/icon/音量-_btn.png" id="7_ei88m"]
+[ext_resource type="Texture2D" path="res://addons/vinokit/modules/vino_video_player/icon/退出_btn.png" id="8_mto06"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0huih"]
 texture = ExtResource("1_jwnkb")
@@ -34,17 +34,14 @@ texture = ExtResource("7_ei88m")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k7y46"]
 texture = ExtResource("8_mto06")
 
-[node name="VideoPlayer" type="Control" unique_id=312539549]
+[node name="VideoPlayer" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 script = ExtResource("1_u31f3")
-hover_zone_height = 500.0
-auto_close_on_finish = true
-video_path = "E:/Download/Video/1.mp4"
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1290810691]
+[node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,7 +50,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1331564542]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -62,30 +59,30 @@ grow_horizontal = 2
 grow_vertical = 2
 expand = true
 
-[node name="VideoToolBar" type="PanelContainer" parent="." unique_id=2068210384]
+[node name="VideoToolBar" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -1050.0
-offset_top = -405.0
-offset_right = 1050.0
-offset_bottom = -155.0
+offset_left = -898.0
+offset_top = -104.0
+offset_right = 898.0
 grow_horizontal = 2
 grow_vertical = 0
-scale = Vector2(0.815, 0.815)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VideoToolBar" unique_id=601165320]
+[node name="HBoxContainer" type="HBoxContainer" parent="VideoToolBar"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="BtnPauseAndPlay" type="Button" parent="VideoToolBar/HBoxContainer" unique_id=115754808]
+[node name="BtnPauseAndPlay" type="Button" parent="VideoToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(104, 104)
 layout_mode = 2
 size_flags_vertical = 4
@@ -94,33 +91,33 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_0q4cf")
 theme_override_styles/hover = SubResource("StyleBoxTexture_0huih")
 toggle_mode = true
 
-[node name="BtnStop" type="Button" parent="VideoToolBar/HBoxContainer" unique_id=1341830311]
+[node name="BtnStop" type="Button" parent="VideoToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(104, 104)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxTexture_ikq88")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ikq88")
 
-[node name="BtnRewind" type="Button" parent="VideoToolBar/HBoxContainer" unique_id=275884674]
+[node name="BtnRewind" type="Button" parent="VideoToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(67, 67)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxTexture_atuqn")
 theme_override_styles/hover = SubResource("StyleBoxTexture_atuqn")
 
-[node name="BtnForward" type="Button" parent="VideoToolBar/HBoxContainer" unique_id=1720996748]
+[node name="BtnForward" type="Button" parent="VideoToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(67, 67)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxTexture_ghhux")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ghhux")
 
-[node name="HSliderPlayback" type="HSlider" parent="VideoToolBar/HBoxContainer" unique_id=844306801]
+[node name="HSliderPlayback" type="HSlider" parent="VideoToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(800, 0)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="BtnMute" type="Button" parent="VideoToolBar/HBoxContainer" unique_id=376271981]
+[node name="BtnMute" type="Button" parent="VideoToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(40, 38)
 layout_mode = 2
 size_flags_vertical = 4
@@ -129,13 +126,13 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_qaa5e")
 theme_override_styles/hover = SubResource("StyleBoxTexture_1psqk")
 toggle_mode = true
 
-[node name="HSliderVolume" type="HSlider" parent="VideoToolBar/HBoxContainer" unique_id=2086450704]
+[node name="HSliderVolume" type="HSlider" parent="VideoToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 4
 value = 50.0
 
-[node name="BtnExit" type="Button" parent="VideoToolBar/HBoxContainer" unique_id=1258560601]
+[node name="BtnExit" type="Button" parent="VideoToolBar/HBoxContainer"]
 custom_minimum_size = Vector2(104, 104)
 layout_mode = 2
 size_flags_vertical = 4
