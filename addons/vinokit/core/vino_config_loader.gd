@@ -12,17 +12,12 @@ signal config_loaded
 var config_file_path: String = "config.ini"
 var debug_print: bool = true
 var is_loaded: bool = false
-var exe_dir: String = ""
 
 var _config := ConfigFile.new()
 
 
 ## 生命周期初始化
 func _ready() -> void:
-	if OS.has_feature("editor"):
-		exe_dir = "res://"
-	else:
-		exe_dir = OS.get_executable_path().get_base_dir()
 	_load()
 
 
@@ -51,23 +46,9 @@ func _load() -> void:
 	config_loaded.emit()
 
 
-## 通用自适应路径解析（独立实现，优先匹配外部 exe 同级目录）
+## 通用自适应路径解析：委托给 VinoPathResolver，与插件内其余模块共用同一套规则。
 func resolve_path(path: String) -> String:
-	if path.is_empty():
-		return ""
-	if path.is_absolute_path():
-		return path
-	if OS.has_feature("editor"):
-		if not path.begins_with("res://"):
-			return "res://".path_join(path)
-		return path
-	else:
-		var external_path := exe_dir.path_join(path.replace("res://", ""))
-		if FileAccess.file_exists(external_path):
-			return external_path
-		if not path.begins_with("res://"):
-			return "res://".path_join(path)
-		return path
+	return VinoPathResolver.resolve(path)
 
 
 ## 自动绑定并注入配置到节点同名变量

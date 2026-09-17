@@ -14,9 +14,10 @@ extends Control
 ##     get_tree().current_scene.add_child(player)
 ##     player.open_video(video_path)
 ##
-## 路径规则（单文件 / 文件夹通用）：
+## 路径规则（单文件 / 文件夹通用，与插件内其余模块共用 VinoPathResolver 规则）：
 ##   - 传绝对路径：直接使用
-##   - 传相对路径：自动拼接到 exe（打包后运行文件）所在目录下，
+##   - 传相对路径：编辑器内按 res:// 处理；导出后优先匹配 exe（打包后运行文件）同级
+##     目录下的文件，不存在则回退到包内 res://。
 ##     例如打包结构为 D:/Builds/项目名/项目.exe + assets/part3/group1/xxx.mp4，
 ##     则只需传入 "assets/part3/group1"，整个 Builds 文件夹换到任何机器（换盘符、
 ##     换父目录）都不用改代码。
@@ -180,15 +181,11 @@ func open_video(path: String) -> void:
 		_load_video(path)
 		_start_video()
 
-## 相对路径拼接到 exe（打包后运行文件）所在目录下，绝对路径原样返回。
+## 路径解析委托给 VinoPathResolver：编辑器内按 res:// 处理，导出后优先匹配 exe 同级目录。
+## 注意：这与旧实现不同 —— 旧代码在编辑器里也会拼接到 Godot 编辑器自身的可执行文件目录下
+## （一个隐藏 bug，编辑器内测试相对路径几乎不可能命中），现在编辑器内测试请使用 res:// 相对路径。
 func _resolve_path(path: String) -> String:
-	var target_path := path.simplify_path()
-	var is_absolute := target_path.is_absolute_path() \
-		or (OS.get_name() == "Windows" and target_path.length() >= 2 and target_path[1] == ":")
-
-	if is_absolute:
-		return target_path
-	return OS.get_executable_path().get_base_dir().path_join(target_path)
+	return VinoPathResolver.resolve(path.simplify_path())
 
 ## 加载单个视频文件为 FFmpeg 视频流（不会自动播放，需配合 _start_video 使用）。
 func _load_video(path: String) -> void:

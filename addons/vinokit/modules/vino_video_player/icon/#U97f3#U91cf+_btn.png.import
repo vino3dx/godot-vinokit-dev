@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvd8cgrkhurhh"
-path="res://.godot/imported/工具条.png-1d7594c4ea78f6027ed1f8fca4b50cc2.ctex"
+uid="uid://ob07x0qxn4ee"
+path="res://.godot/imported/#U97f3#U91cf+_btn.png-4d86b9a119b992279e295b4e1a6f6d23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/vinokit/modules/vino_video_player/icon/工具条.png"
-dest_files=["res://.godot/imported/工具条.png-1d7594c4ea78f6027ed1f8fca4b50cc2.ctex"]
+source_file="res://addons/vinokit/modules/vino_video_player/icon/#U97f3#U91cf+_btn.png"
+dest_files=["res://.godot/imported/#U97f3#U91cf+_btn.png-4d86b9a119b992279e295b4e1a6f6d23.ctex"]
 
 [params]
 

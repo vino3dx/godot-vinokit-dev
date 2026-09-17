@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3wc75pf4k1l5"
-path="res://.godot/imported/进度滑块_btn.png-362e1dfd21783e7ab9cfb23412df2273.ctex"
+uid="uid://bvd8cgrkhurhh"
+path="res://.godot/imported/#U5de5#U5177#U6761.png-bf8715d3423663810d2e99bc7e67c592.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/vinokit/modules/vino_video_player/icon/进度滑块_btn.png"
-dest_files=["res://.godot/imported/进度滑块_btn.png-362e1dfd21783e7ab9cfb23412df2273.ctex"]
+source_file="res://addons/vinokit/modules/vino_video_player/icon/#U5de5#U5177#U6761.png"
+dest_files=["res://.godot/imported/#U5de5#U5177#U6761.png-bf8715d3423663810d2e99bc7e67c592.ctex"]
 
 [params]
 

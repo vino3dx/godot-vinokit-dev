@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="VinoKit"
+config/name="GodotPluginsDev"
 config/description="基于Godot引擎开发的组件和插件库"
 config/tags=PackedStringArray("demo")
 run/main_scene="uid://c5y33cf4q821j"

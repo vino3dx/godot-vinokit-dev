@@ -6,8 +6,10 @@ Godot 4.x 通用底层工具集，各模块相互独立、按需使用。
 
 ```
 core/       配置 / 资产 / 数据加载、窗口控制（Autoload 单例，插件启用后自动注册）
+utils/      无状态静态工具函数库（math/string/array/node/dictionary/color），VinoXxx.func() 直接调用
 network/    TCP 心跳、TCP-UDP 网关、UDP 收发（普通节点，手动挂载到场景）
 ui/         动画按钮、批量 UI 动画、摄像头画面视图（普通节点）
+components/ 可复用场景组件（环绕相机、自动旋转、3D 可交互对象、纯代码 UI 组件），按需挂载
 tools/      ClassDB 反射调试工具（@tool 节点，编辑器内使用）
 modules/    独立功能模块（目前含视频播放组件 video_player.tscn）
 ```
@@ -33,3 +35,11 @@ modules/    独立功能模块（目前含视频播放组件 video_player.tscn�
 - `network/` 下的心跳协议（`ID:<id>:Md5`、`State:<id>:<state>` 等）是项目专属协议，
   接入不同后端时需自行调整 `vino_tcp_heartbeat_monitor.gd` 中的解析逻辑
 - `modules/vino_video_player` 依赖 FFmpeg 插件提供的 `FFmpegVideoStream`，未安装时会打印错误并跳过播放
+
+## utils / components 层（本轮新增）
+
+`utils/` 下的函数库是纯工具函数，可以直接用；`components/` 下的场景组件（`VinoOrbitCamera`、
+`VinoAutoRotate`、`VinoInteractable`、`VinoLoading`、`VinoToast`）目前**还没有在真实项目里跑过**，
+是按 vinokit 的定位预先搭好的骨架，接入具体项目时大概率需要按实际需求调整参数或补充细节
+（例如 `VinoInteractable` 目前只做了缩放高亮反馈，没有处理选中态/多选逻辑）。用之前建议先在
+一个简单场景里验证一遍再接入正式项目。

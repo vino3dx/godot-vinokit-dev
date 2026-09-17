@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4sxuw542stua"
-path="res://.godot/imported/前进_btn.png-88f7c5747a1f7b4d41103cf16196270f.ctex"
+path="res://.godot/imported/#U524d#U8fdb_btn.png-abedb7397f5c83a587734d54919558af.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/vinokit/modules/vino_video_player/icon/前进_btn.png"
-dest_files=["res://.godot/imported/前进_btn.png-88f7c5747a1f7b4d41103cf16196270f.ctex"]
+source_file="res://addons/vinokit/modules/vino_video_player/icon/#U524d#U8fdb_btn.png"
+dest_files=["res://.godot/imported/#U524d#U8fdb_btn.png-abedb7397f5c83a587734d54919558af.ctex"]
 
 [params]
 
