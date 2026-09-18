@@ -1,16 +1,8 @@
-; Engine configuration file.
-; It's best edited using the editor UI and not directly,
-; since the parameters that go here are not all obvious.
-;
-; Format:
-;   [section] ; section goes between []
-;   param=value ; assign values to parameters
-
 config_version=5
 
 [application]
 
-config/name="GodotPluginsDev"
+config/name="GodotVinoKit"
 config/description="基于Godot引擎开发的组件和插件库"
 config/tags=PackedStringArray("demo")
 run/main_scene="uid://c5y33cf4q821j"
@@ -21,9 +13,9 @@ config/icon="uid://b5pt8eyhh83e0"
 [autoload]
 
 VinoConfig="*uid://dbx3u85qdaqtj"
-VinoAssets="uid://tuop8a38kctm"
-VinoData="uid://bi7usc7grjafd"
-VinoWindow="uid://dim0wegwqd86"
+VinoAssets="*uid://tuop8a38kctm"
+VinoData="*uid://bi7usc7grjafd"
+VinoWindow="*uid://dim0wegwqd86"
 
 [display]
 

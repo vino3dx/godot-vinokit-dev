@@ -1,4 +1,4 @@
-class_name VinoAnimationButton
+class_name VinoUIButton
 extends Button
 ## 带悬停缩放、按下反馈、可选呼吸动画的按钮
 
