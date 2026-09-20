@@ -1,7 +1,16 @@
 [gd_scene format=3 uid="uid://c5y33cf4q821j"]
 
-[ext_resource type="Script" uid="uid://dmdhavns8m5rp" path="res://addons/vinokit/components/camera/vino_orbit_camera.gd" id="3_6gv3e"]
+[ext_resource type="Script" uid="uid://bhkos8i1abau2" path="res://addons/vinokit/tools/vino_shader_converter.gd" id="1_vs7ol"]
 
-[node name="VinoOrbitCamera" type="Camera3D" unique_id=1908586124]
-script = ExtResource("3_6gv3e")
-metadata/_custom_type_script = "uid://dmdhavns8m5rp"
+[node name="Control" type="Control" unique_id=197360960]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VinoShaderConverter" type="Node" parent="." unique_id=859353390]
+script = ExtResource("1_vs7ol")
+source_file = "uid://cki5tvpviu5mu"
+metadata/_custom_type_script = "uid://bhkos8i1abau2"

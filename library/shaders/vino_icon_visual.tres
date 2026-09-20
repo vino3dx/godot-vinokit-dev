@@ -1,0 +1,369 @@
+[gd_resource type="VisualShader" format=3 uid="uid://bymiyyjducjig"]
+
+[sub_resource type="VisualShaderNodeExpression" id="VisualShaderNodeExpression_ts4cp"]
+size = Vector2(420, 260)
+expression = "
+	vec2 p = UV - vec2(0.5);
+
+	float aspect = TEXTURE_PIXEL_SIZE.y / TEXTURE_PIXEL_SIZE.x;
+	if (aspect > 1.0) {
+		p.y *= aspect;
+	} else {
+		p.x /= aspect;
+	}
+
+	float d = 1.0;
+
+	if (u_icon_type == 0) {
+		d = icon_play(p);
+	} else if (u_icon_type == 1) {
+		d = icon_pause(p);
+	} else if (u_icon_type == 2) {
+		d = icon_stop(p);
+	} else if (u_icon_type == 3) {
+		d = icon_back(p);
+	} else if (u_icon_type == 4) {
+		d = icon_forward(p);
+	} else if (u_icon_type == 5) {
+		d = icon_volume_minus(p);
+	} else if (u_icon_type == 6) {
+		d = icon_volume_plus(p);
+	} else if (u_icon_type == 7) {
+		d = icon_exit(p);
+	}
+
+	
+	float aa = fwidth(d);
+	float alpha = 1.0 - smoothstep(-aa, aa, d);
+
+	COLOR = vec4(u_icon_color.rgb, alpha * u_icon_color.a);
+"
+
+[sub_resource type="VisualShaderNodeGlobalExpression" id="VisualShaderNodeGlobalExpression_if2v3"]
+size = Vector2(420, 200)
+expression = "float cross2d(vec2 a, vec2 b) {
+	return a.x * b.y - a.y * b.x;
+}
+
+float sd_box(vec2 p, vec2 size, float radius) {
+	vec2 q = abs(p) - size + radius;
+	return length(max(q, vec2(0.0))) + min(max(q.x, q.y), 0.0) - radius;
+}
+
+float sd_segment(vec2 p, vec2 a, vec2 b, float width) {
+	vec2 pa = p - a;
+	vec2 ba = b - a;
+	float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+	return length(pa - ba * h) - width;
+}
+
+float sd_triangle(vec2 p, vec2 a, vec2 b, vec2 c) {
+	float d1 = sd_segment(p, a, b, 0.0);
+	float d2 = sd_segment(p, b, c, 0.0);
+	float d3 = sd_segment(p, c, a, 0.0);
+	float d = min(d1, min(d2, d3));
+
+	float c1 = cross2d(b - a, p - a);
+	float c2 = cross2d(c - b, p - b);
+	float c3 = cross2d(a - c, p - c);
+
+	bool inside = (c1 >= 0.0 && c2 >= 0.0 && c3 >= 0.0) || (c1 <= 0.0 && c2 <= 0.0 && c3 <= 0.0);
+	return inside ? -d : d;
+}
+
+
+float sd_trapezoid(vec2 p, float r1, float r2, float he) {
+	vec2 k1 = vec2(r2, he);
+	vec2 k2 = vec2(r2 - r1, 2.0 * he);
+	p.x = abs(p.x);
+	vec2 ca = vec2(p.x - min(p.x, (p.y < 0.0) ? r1 : r2), abs(p.y) - he);
+	vec2 cb = p - k1 + k2 * clamp(dot(k1 - p, k2) / dot(k2, k2), 0.0, 1.0);
+	float s = (cb.x < 0.0 && ca.y < 0.0) ? -1.0 : 1.0;
+	return s * sqrt(min(dot(ca, ca), dot(cb, cb)));
+}
+
+
+
+
+
+
+float icon_play(vec2 p) {
+	vec2 a = vec2(-0.25, -0.35);
+	vec2 b = vec2(-0.25,  0.35);
+	vec2 c = vec2( 0.35,  0.00);
+	return sd_triangle(p, a, b, c);
+}
+
+
+float icon_pause(vec2 p) {
+	float left = sd_box(p - vec2(-0.16, 0.0), vec2(0.09, 0.35), 0.03);
+	float right = sd_box(p - vec2( 0.16, 0.0), vec2(0.09, 0.35), 0.03);
+	return min(left, right);
+}
+
+
+float icon_stop(vec2 p) {
+	return sd_box(p, vec2(0.33), 0.04);
+}
+
+
+float icon_back(vec2 p) {
+	vec2 a1 = vec2(-0.02, -0.30);
+	vec2 b1 = vec2(-0.02,  0.30);
+	vec2 c1 = vec2(-0.35,  0.00);
+
+	vec2 a2 = vec2(0.33, -0.30);
+	vec2 b2 = vec2(0.33,  0.30);
+	vec2 c2 = vec2(0.00,  0.00);
+
+	return min(sd_triangle(p, a1, b1, c1), sd_triangle(p, a2, b2, c2));
+}
+
+
+float icon_forward(vec2 p) {
+	vec2 a1 = vec2(0.02, -0.30);
+	vec2 b1 = vec2(0.02,  0.30);
+	vec2 c1 = vec2(0.35,  0.00);
+
+	vec2 a2 = vec2(-0.33, -0.30);
+	vec2 b2 = vec2(-0.33,  0.30);
+	vec2 c2 = vec2( 0.00,  0.00);
+
+	return min(sd_triangle(p, a1, b1, c1), sd_triangle(p, a2, b2, c2));
+}
+
+
+float speaker_base(vec2 p) {
+	
+	float body = sd_box(p - vec2(-0.28, 0.0), vec2(0.07, 0.12), 0.02);
+
+	
+	
+	vec2 tp = vec2(p.y, p.x + 0.10);
+	float cone = sd_trapezoid(tp, 0.12, 0.28, 0.11);
+
+	
+	return min(body, cone);
+}
+
+
+float icon_volume_minus(vec2 p) {
+	float speaker = speaker_base(p);
+	float minus = sd_segment(p, vec2(0.12, 0.0), vec2(0.36, 0.0), 0.035);
+	return min(speaker, minus);
+}
+
+
+float icon_volume_plus(vec2 p) {
+	float speaker = speaker_base(p);
+	float h = sd_segment(p, vec2(0.12, 0.0), vec2(0.36, 0.0), 0.035);
+	float v = sd_segment(p, vec2(0.24, -0.12), vec2(0.24, 0.12), 0.035);
+	return min(speaker, min(h, v));
+}
+
+
+float icon_exit(vec2 p) {
+	float door = sd_box(p + vec2(0.18, 0.0), vec2(0.20, 0.36), 0.03);
+	float door_inner = sd_box(p + vec2(-0.10, 0.0), vec2(0.14, 0.30), 0.2);
+	door = max(door, -door_inner);
+
+	float line = sd_segment(p, vec2(-0.10, 0.0), vec2(0.36, 0.0), 0.045);
+	float arrow1 = sd_segment(p, vec2(0.36, 0.0), vec2(0.18, 0.18), 0.045);
+	float arrow2 = sd_segment(p, vec2(0.36, 0.0), vec2(0.18, -0.18), 0.045);
+
+	return min(door, min(line, min(arrow1, arrow2)));
+}"
+
+[sub_resource type="VisualShaderNodeIntParameter" id="VisualShaderNodeIntParameter_c0nh2"]
+parameter_name = "icon_type"
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_3slma"]
+parameter_name = "icon_color"
+
+[resource]
+mode = 1
+flags/light_only = false
+nodes/fragment/2/node = SubResource("VisualShaderNodeExpression_ts4cp")
+nodes/fragment/2/position = Vector2(-300, -200)
+nodes/fragment/2/size = Vector2(420, 260)
+nodes/fragment/2/input_ports = "0,1,u_icon_type;1,5,u_icon_color;"
+nodes/fragment/2/output_ports = ""
+nodes/fragment/2/expression = "
+	vec2 p = UV - vec2(0.5);
+
+	float aspect = TEXTURE_PIXEL_SIZE.y / TEXTURE_PIXEL_SIZE.x;
+	if (aspect > 1.0) {
+		p.y *= aspect;
+	} else {
+		p.x /= aspect;
+	}
+
+	float d = 1.0;
+
+	if (u_icon_type == 0) {
+		d = icon_play(p);
+	} else if (u_icon_type == 1) {
+		d = icon_pause(p);
+	} else if (u_icon_type == 2) {
+		d = icon_stop(p);
+	} else if (u_icon_type == 3) {
+		d = icon_back(p);
+	} else if (u_icon_type == 4) {
+		d = icon_forward(p);
+	} else if (u_icon_type == 5) {
+		d = icon_volume_minus(p);
+	} else if (u_icon_type == 6) {
+		d = icon_volume_plus(p);
+	} else if (u_icon_type == 7) {
+		d = icon_exit(p);
+	}
+
+	
+	float aa = fwidth(d);
+	float alpha = 1.0 - smoothstep(-aa, aa, d);
+
+	COLOR = vec4(u_icon_color.rgb, alpha * u_icon_color.a);
+"
+nodes/fragment/3/node = SubResource("VisualShaderNodeGlobalExpression_if2v3")
+nodes/fragment/3/position = Vector2(-300, -450)
+nodes/fragment/3/size = Vector2(420, 200)
+nodes/fragment/3/input_ports = ""
+nodes/fragment/3/output_ports = ""
+nodes/fragment/3/expression = "float cross2d(vec2 a, vec2 b) {
+	return a.x * b.y - a.y * b.x;
+}
+
+float sd_box(vec2 p, vec2 size, float radius) {
+	vec2 q = abs(p) - size + radius;
+	return length(max(q, vec2(0.0))) + min(max(q.x, q.y), 0.0) - radius;
+}
+
+float sd_segment(vec2 p, vec2 a, vec2 b, float width) {
+	vec2 pa = p - a;
+	vec2 ba = b - a;
+	float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+	return length(pa - ba * h) - width;
+}
+
+float sd_triangle(vec2 p, vec2 a, vec2 b, vec2 c) {
+	float d1 = sd_segment(p, a, b, 0.0);
+	float d2 = sd_segment(p, b, c, 0.0);
+	float d3 = sd_segment(p, c, a, 0.0);
+	float d = min(d1, min(d2, d3));
+
+	float c1 = cross2d(b - a, p - a);
+	float c2 = cross2d(c - b, p - b);
+	float c3 = cross2d(a - c, p - c);
+
+	bool inside = (c1 >= 0.0 && c2 >= 0.0 && c3 >= 0.0) || (c1 <= 0.0 && c2 <= 0.0 && c3 <= 0.0);
+	return inside ? -d : d;
+}
+
+
+float sd_trapezoid(vec2 p, float r1, float r2, float he) {
+	vec2 k1 = vec2(r2, he);
+	vec2 k2 = vec2(r2 - r1, 2.0 * he);
+	p.x = abs(p.x);
+	vec2 ca = vec2(p.x - min(p.x, (p.y < 0.0) ? r1 : r2), abs(p.y) - he);
+	vec2 cb = p - k1 + k2 * clamp(dot(k1 - p, k2) / dot(k2, k2), 0.0, 1.0);
+	float s = (cb.x < 0.0 && ca.y < 0.0) ? -1.0 : 1.0;
+	return s * sqrt(min(dot(ca, ca), dot(cb, cb)));
+}
+
+
+
+
+
+
+float icon_play(vec2 p) {
+	vec2 a = vec2(-0.25, -0.35);
+	vec2 b = vec2(-0.25,  0.35);
+	vec2 c = vec2( 0.35,  0.00);
+	return sd_triangle(p, a, b, c);
+}
+
+
+float icon_pause(vec2 p) {
+	float left = sd_box(p - vec2(-0.16, 0.0), vec2(0.09, 0.35), 0.03);
+	float right = sd_box(p - vec2( 0.16, 0.0), vec2(0.09, 0.35), 0.03);
+	return min(left, right);
+}
+
+
+float icon_stop(vec2 p) {
+	return sd_box(p, vec2(0.33), 0.04);
+}
+
+
+float icon_back(vec2 p) {
+	vec2 a1 = vec2(-0.02, -0.30);
+	vec2 b1 = vec2(-0.02,  0.30);
+	vec2 c1 = vec2(-0.35,  0.00);
+
+	vec2 a2 = vec2(0.33, -0.30);
+	vec2 b2 = vec2(0.33,  0.30);
+	vec2 c2 = vec2(0.00,  0.00);
+
+	return min(sd_triangle(p, a1, b1, c1), sd_triangle(p, a2, b2, c2));
+}
+
+
+float icon_forward(vec2 p) {
+	vec2 a1 = vec2(0.02, -0.30);
+	vec2 b1 = vec2(0.02,  0.30);
+	vec2 c1 = vec2(0.35,  0.00);
+
+	vec2 a2 = vec2(-0.33, -0.30);
+	vec2 b2 = vec2(-0.33,  0.30);
+	vec2 c2 = vec2( 0.00,  0.00);
+
+	return min(sd_triangle(p, a1, b1, c1), sd_triangle(p, a2, b2, c2));
+}
+
+
+float speaker_base(vec2 p) {
+	
+	float body = sd_box(p - vec2(-0.28, 0.0), vec2(0.07, 0.12), 0.02);
+
+	
+	
+	vec2 tp = vec2(p.y, p.x + 0.10);
+	float cone = sd_trapezoid(tp, 0.12, 0.28, 0.11);
+
+	
+	return min(body, cone);
+}
+
+
+float icon_volume_minus(vec2 p) {
+	float speaker = speaker_base(p);
+	float minus = sd_segment(p, vec2(0.12, 0.0), vec2(0.36, 0.0), 0.035);
+	return min(speaker, minus);
+}
+
+
+float icon_volume_plus(vec2 p) {
+	float speaker = speaker_base(p);
+	float h = sd_segment(p, vec2(0.12, 0.0), vec2(0.36, 0.0), 0.035);
+	float v = sd_segment(p, vec2(0.24, -0.12), vec2(0.24, 0.12), 0.035);
+	return min(speaker, min(h, v));
+}
+
+
+float icon_exit(vec2 p) {
+	float door = sd_box(p + vec2(0.18, 0.0), vec2(0.20, 0.36), 0.03);
+	float door_inner = sd_box(p + vec2(-0.10, 0.0), vec2(0.14, 0.30), 0.2);
+	door = max(door, -door_inner);
+
+	float line = sd_segment(p, vec2(-0.10, 0.0), vec2(0.36, 0.0), 0.045);
+	float arrow1 = sd_segment(p, vec2(0.36, 0.0), vec2(0.18, 0.18), 0.045);
+	float arrow2 = sd_segment(p, vec2(0.36, 0.0), vec2(0.18, -0.18), 0.045);
+
+	return min(door, min(line, min(arrow1, arrow2)));
+}"
+nodes/fragment/4/node = SubResource("VisualShaderNodeIntParameter_c0nh2")
+nodes/fragment/4/position = Vector2(-700, -200)
+nodes/fragment/5/node = SubResource("VisualShaderNodeColorParameter_3slma")
+nodes/fragment/5/position = Vector2(-700, -50)
+nodes/fragment/connections = PackedInt32Array(4, 0, 2, 0, 5, 0, 2, 1)

@@ -1,17 +1,28 @@
 class_name VinoConfigLoader
 extends Node
-## VinoConfigLoader - 全局配置文件加载器（独立无依赖版）
+## VinoConfigLoader - 全局配置文件加载器
 ##
 ## 建议 Autoload 挂载名称：VinoConfig
 ## 1. 任意位置获取配置：VinoConfig.get_value("Section", "Key", default)
 ## 2. 自动注入属性到节点：VinoConfig.bind(self)
 ## 3. 可选传入注入完成后的回调函数；若未指定则自动查找节点上的 _apply_config() 方法
+## 4. 已知名字的资源根目录：VinoConfig.get_root("assets") —— ini 里 [Paths] 配了 assets 就用配置值
+##    （换目录、换盘符都不用改代码），没配就默认去 exe 同级目录下找 assets/ 文件夹，
+##    找不到再回退包内 res://assets
+## 5. 不确定资源文件夹到底叫什么名字时：VinoConfig.get_asset_root() —— ini 没配置的情况下，
+##    按 default_asset_roots 里的顺序依次探测 exe 同级目录，命中第一个真实存在的文件夹就用它
+##    （例如有的机器上是 assets/，有的是 data/，不用为每台机器改配置）
 
 signal config_loaded
 
 var config_file_path: String = "config.ini"
 var debug_print: bool = true
 var is_loaded: bool = false
+
+## get_asset_root() 在 ini 未显式配置时依次探测的候选文件夹名，按优先级排列。
+## 项目里习惯用别的名字（比如 Resources、StreamingAssets）可以直接在这里改，或者用
+## get_asset_root(["Resources", "StreamingAssets"]) 临时传自定义候选列表。
+var default_asset_roots: PackedStringArray = ["assets", "res", "resource", "data"]
 
 var _config := ConfigFile.new()
 
@@ -42,13 +53,67 @@ func _load() -> void:
 		push_error("[VinoConfigLoader] 解析失败，请检查 config.ini 格式（需 UTF-8）")
 		return
 	is_loaded = true
-	_log("✅ 配置加载成功，节点小节: " + str(_config.get_sections()))
+	_log("已加载，节点小节: " + str(_config.get_sections()))
 	config_loaded.emit()
 
 
 ## 通用自适应路径解析：委托给 VinoPathResolver，与插件内其余模块共用同一套规则。
+## 绝对路径原样返回；编辑器内按 res:// 处理；导出后优先匹配 exe 同级目录下的外部文件/文件夹，
+## 找不到再回退包内 res://。
 func resolve_path(path: String) -> String:
 	return VinoPathResolver.resolve(path)
+
+
+## 读取一个“路径类”配置项并直接解析好返回，省去 resolve_path(get_value(...)) 两步写法。
+## - ini 里写了该 key：以 ini 里的值为准（可以是绝对路径，也可以是相对路径）
+## - ini 里没写：用调用方传入的 default_relative_path 作为默认值
+## 最终都会走 resolve_path()。
+## 用法：var assets_dir = VinoConfig.get_config_path("Paths", "assets_dir", "assets")
+func get_config_path(section: String, key: String, default_relative_path: String) -> String:
+	var raw := str(get_value(section, key, default_relative_path))
+	return resolve_path(raw)
+
+
+## get_config_path() 的便捷封装：约定固定读取 [Paths] 小节，且默认相对路径就是 root_name 本身，
+## 适合“已经知道资源文件夹具体叫什么名字”的场景（比如就叫 assets）。
+## - config.ini 里写了 [Paths] 下同名 key：用 ini 里的值（整体换目录，改这一行不用碰代码）
+##     [Paths]
+##     assets = "D:/SharedAssets"
+## - 没写：默认去 exe 同级目录下找同名文件夹（导出后），或包内 res://root_name（编辑器内 / 找不到时）
+func get_root(root_name: String, default_relative_path: String = "") -> String:
+	var fallback := default_relative_path if not default_relative_path.is_empty() else root_name
+	return get_config_path("Paths", root_name, fallback)
+
+
+## 不确定资源根目录到底叫什么名字时用这个：
+## - ini [Paths] 下配置了 root_key（默认键名 "assets_root"）就直接用配置值，走 resolve_path()
+## - 没配置：依次探测 candidates 列表（默认用 default_asset_roots），编辑器内检查 res://<name>
+##   是否真实存在，导出后检查 exe 同级目录下 <name> 文件夹是否存在，命中第一个就返回
+## - 全部候选都不存在：兜底返回 candidates 第一项按标准规则 resolve 后的结果
+## 用法：var assets_dir = VinoConfig.get_asset_root()  # 自动在 assets/res/resource/data 里找一个存在的
+func get_asset_root(candidates: PackedStringArray = PackedStringArray(), root_key: String = "assets_root", section: String = "Paths") -> String:
+	var pool := candidates if not candidates.is_empty() else default_asset_roots
+	if pool.is_empty():
+		push_error("[VinoConfigLoader] get_asset_root: 候选列表为空")
+		return ""
+
+	if has_section(section) and get_section_keys(section).has(root_key):
+		return resolve_path(str(get_value(section, root_key)))
+
+	for candidate_name in pool:
+		var candidate_path := resolve_path(candidate_name)
+		if _dir_really_exists(candidate_path):
+			return candidate_path
+
+	_log("get_asset_root: 候选目录都不存在，回退到默认值 " + pool[0])
+	return resolve_path(pool[0])
+
+
+## 内部：判断 resolve_path() 返回的路径是否真实存在，兼容 res:// 与外部绝对路径两种情况。
+func _dir_really_exists(path: String) -> bool:
+	if path.begins_with("res://"):
+		return DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(path))
+	return DirAccess.dir_exists_absolute(path)
 
 
 ## 自动绑定并注入配置到节点同名变量

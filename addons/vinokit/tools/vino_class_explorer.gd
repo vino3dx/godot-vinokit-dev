@@ -1,6 +1,6 @@
 @tool
 extends Node
-class_name ClassExplorerTool
+class_name ClassExplorer
 
 ## ClassExplorerTool：ClassDB 反射调试工具
 ##

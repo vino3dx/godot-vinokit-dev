@@ -1,4 +1,5 @@
 extends Control
+
 @onready var texture_rect: TextureRect = $TextureRect
 var tex_path: String
 

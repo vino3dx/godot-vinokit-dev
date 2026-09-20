@@ -3,9 +3,10 @@ extends Node
 ## VinoWindowController - 窗口与显示器控制器
 ##
 ## 功能：多显示器切换、窗口定位、居中、边界夹紧，以及窗口化/无边框/全屏/独占全屏模式切换。
-## 支持在 config.ini 的 [WindowController]（或兼容旧版 [Window]）小节中配置。
+## 支持在 config.ini 的 [VinoWindow] 小节中配置（兼容旧版 [WindowController] 和 [Window]）。
 
 const TAG := "VinoWindow"
+const SECTIONS := ["VinoWindow", "WindowController", "Window"] # 配置小节名，按优先级查找，第一个存在的生效
 
 enum WindowMode {
 	WINDOWED,             ## 普通窗口
@@ -87,9 +88,15 @@ func _apply_from_config() -> void:
 		_apply_window_position()
 		return
 
-	var sec := "WindowController"
-	if not config.has_section(sec) and config.has_section("Window"):
-		sec = "Window" # 兼容旧版配置小节名
+	var sec := ""
+	for s in SECTIONS:
+		if config.has_section(s):
+			sec = s
+			break
+	if sec.is_empty():
+		VinoLogger.warn(TAG, "config 中未找到小节 %s，使用默认值" % str(SECTIONS))
+		_apply_window_position()
+		return
 
 	screen = int(config.get_value(sec, "screen", screen))
 	pos_x = int(config.get_value(sec, "pos_x", pos_x))
@@ -133,6 +140,7 @@ func _apply_window_position() -> void:
 		DisplayServer.window_set_size(Vector2i(override_width, override_height))
 		await get_tree().process_frame
 		await get_tree().process_frame
+		print("want=", Vector2i(override_width, override_height), " got=", DisplayServer.window_get_size(), " min=", DisplayServer.window_get_min_size()) # 临时调试
 
 	var screen_pos := DisplayServer.screen_get_position(screen)
 	var screen_size := DisplayServer.screen_get_size(screen)
