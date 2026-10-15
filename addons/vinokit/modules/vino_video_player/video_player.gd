@@ -132,7 +132,6 @@ func _ready() -> void:
 	for b: Button in [_btn_pause_and_play, _btn_stop, _btn_rewind, _btn_forward, _btn_mute, _btn_exit]:
 		b.expand_icon = true # 图标随按钮尺寸缩放；不开的话按钮最小尺寸会被图标原始尺寸撑死
 		b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_connect_signals()
 
 func _process(delta: float) -> void:
 	if _video.is_playing() and not _video.paused and not _is_dragging:
