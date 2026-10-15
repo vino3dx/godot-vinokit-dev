@@ -14,7 +14,7 @@ config/name="GodotVinoKit"
 config/description="基于Godot引擎开发的组件和插件库"
 config/tags=PackedStringArray("demo")
 run/main_scene="res://addons/vinokit/modules/vino_video_player/video_player.tscn"
-config/features=PackedStringArray("4.7", "GL Compatibility")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://b5pt8eyhh83e0"
 
