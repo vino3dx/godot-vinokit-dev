@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://bv8np2jh5r0aq"]
+
+[ext_resource type="Script" uid="uid://c3kxvq7mwb21r" path="res://addons/vinokit/modules/browser/vino_content_browser.gd" id="1_browser"]
+
+[node name="VinoContentBrowser" type="Control" unique_id=453352352]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_browser")
+
+[node name="TitleBar" type="Control" parent="." unique_id=216838230]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 136.0
+offset_top = 426.0
+offset_right = 307.0
+offset_bottom = 1374.0
+mouse_filter = 2
+
+[node name="ModuleTitle" type="Label" parent="TitleBar" unique_id=2006216006]
+layout_mode = 1
+offset_right = 171.0
+offset_bottom = 948.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+text = "内
+容
+浏
+览"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DirectoryPanel" type="Control" parent="." unique_id=965684970]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 296.0
+offset_top = 340.0
+offset_right = 900.0
+offset_bottom = 1928.0
+mouse_filter = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="DirectoryPanel" unique_id=1492079154]
+layout_mode = 1
+offset_top = 99.0
+offset_right = 605.0
+offset_bottom = 1489.0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="DirectoryList" type="VBoxContainer" parent="DirectoryPanel/ScrollContainer" unique_id=753937505]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollUpButton" type="Button" parent="DirectoryPanel" unique_id=235431736]
+layout_mode = 1
+offset_left = 162.0
+offset_top = 14.0
+offset_right = 469.0
+offset_bottom = 89.0
+mouse_default_cursor_shape = 2
+text = "↑"
+
+[node name="ScrollDownButton" type="Button" parent="DirectoryPanel" unique_id=1615764006]
+layout_mode = 1
+offset_left = 162.0
+offset_top = 1499.0
+offset_right = 469.0
+offset_bottom = 1574.0
+mouse_default_cursor_shape = 2
+text = "↓"
+
+[node name="ContentPanel" type="Control" parent="." unique_id=2126473350]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 917.0
+offset_top = 348.0
+offset_right = 3522.0
+offset_bottom = 1921.0
+mouse_filter = 2
+
+[node name="ImagePage" type="TextureRect" parent="ContentPanel" unique_id=1396745825]
+layout_mode = 1
+offset_left = 17.0
+offset_top = 30.0
+offset_right = 2590.0
+offset_bottom = 1473.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EmptyHint" type="Label" parent="ContentPanel" unique_id=2119820074]
+visible = false
+layout_mode = 1
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 2575.0
+offset_bottom = 1473.0
+theme_override_colors/font_color = Color(0.35, 0.45, 0.5, 1)
+theme_override_font_sizes/font_size = 72
+text = "暂无内容"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PreviousPageButton" type="Button" parent="ContentPanel" unique_id=779286258]
+layout_mode = 1
+offset_left = 17.0
+offset_top = 471.0
+offset_right = 218.0
+offset_bottom = 1114.0
+mouse_default_cursor_shape = 2
+text = "‹"
+
+[node name="NextPageButton" type="Button" parent="ContentPanel" unique_id=155911434]
+layout_mode = 1
+offset_left = 2392.0
+offset_top = 471.0
+offset_right = 2593.0
+offset_bottom = 1114.0
+mouse_default_cursor_shape = 2
+text = "›"
+
+[node name="PageIndicator" type="Label" parent="ContentPanel" unique_id=1263764937]
+layout_mode = 1
+offset_left = 1152.0
+offset_top = 1483.0
+offset_right = 1452.0
+offset_bottom = 1553.0
+theme_override_colors/font_color = Color(0.2, 0.34, 0.42, 1)
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="." unique_id=639257510]
+layout_mode = 1
+offset_left = 3538.0
+offset_top = 1740.0
+offset_right = 3688.0
+offset_bottom = 1884.0
+mouse_default_cursor_shape = 2
+text = "返回"

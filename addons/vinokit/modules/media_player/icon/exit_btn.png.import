@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4sxuw542stua"
-path="res://.godot/imported/forward_btn.png-1a92ffedab84323e8eb62bff431debfd.ctex"
+uid="uid://cyedpicwrhuiq"
+path="res://.godot/imported/exit_btn.png-7b4d8b7edcf7abf92fa1432a38c4a553.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/vinokit/modules/vino_video_player/icon/forward_btn.png"
-dest_files=["res://.godot/imported/forward_btn.png-1a92ffedab84323e8eb62bff431debfd.ctex"]
+source_file="res://addons/vinokit/modules/media_player/icon/exit_btn.png"
+dest_files=["res://.godot/imported/exit_btn.png-7b4d8b7edcf7abf92fa1432a38c4a553.ctex"]
 
 [params]
 

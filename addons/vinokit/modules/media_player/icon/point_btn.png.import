@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ob07x0qxn4ee"
-path="res://.godot/imported/unmute_btn.png-c95e2717a08fbc0e8e01843c6ada76a7.ctex"
+uid="uid://dlvj83o8sy2t8"
+path="res://.godot/imported/point_btn.png-4a22793bd04dc1c5fbdd061d4ef3a76e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/vinokit/modules/vino_video_player/icon/unmute_btn.png"
-dest_files=["res://.godot/imported/unmute_btn.png-c95e2717a08fbc0e8e01843c6ada76a7.ctex"]
+source_file="res://addons/vinokit/modules/media_player/icon/point_btn.png"
+dest_files=["res://.godot/imported/point_btn.png-4a22793bd04dc1c5fbdd061d4ef3a76e.ctex"]
 
 [params]
 

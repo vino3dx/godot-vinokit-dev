@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cqnlt5a46k635"
-path="res://.godot/imported/mute_btn.png-d2eb6b1c62bf33981f0fc8e8ef706cd2.ctex"
+uid="uid://bms1piqyxe1jo"
+path="res://.godot/imported/capture_20261015_165709.png-aa59a8efa79be130805cceda5c479f77.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/vinokit/modules/vino_video_player/icon/mute_btn.png"
-dest_files=["res://.godot/imported/mute_btn.png-d2eb6b1c62bf33981f0fc8e8ef706cd2.ctex"]
+source_file="res://temp/capture_20261015_165709.png"
+dest_files=["res://.godot/imported/capture_20261015_165709.png-aa59a8efa79be130805cceda5c479f77.ctex"]
 
 [params]
 

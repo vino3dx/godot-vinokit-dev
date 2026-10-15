@@ -25,7 +25,6 @@
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k7y46"]
 
 [node name="VideoPlayer" type="Control" unique_id=83892498]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0

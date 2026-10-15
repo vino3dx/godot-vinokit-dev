@@ -39,7 +39,7 @@ enabled=PackedStringArray("res://addons/vinokit/plugin.cfg")
 
 folder_colors={
 "res://addons/license/": "red",
-"res://addons/vinokit/": "green"
+"res://addons/vinokit/": "red"
 }
 
 [physics]
