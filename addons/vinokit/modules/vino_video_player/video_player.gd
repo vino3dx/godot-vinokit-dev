@@ -1,3 +1,4 @@
+@tool
 class_name VideoOverlayPlayer
 extends Control
 ## 视频播放组件（单脚本，鼠标 / 触屏双端适配）。
@@ -76,14 +77,15 @@ signal closed
 @onready var _color_rect: ColorRect = $ColorRect
 @onready var _video: VideoStreamPlayer = $VideoStreamPlayer
 @onready var _bar: PanelContainer = $VideoToolBar
-@onready var _btn_pause_and_play: Button = $VideoToolBar/HBoxContainer/BtnPauseAndPlay
-@onready var _btn_stop: Button = $VideoToolBar/HBoxContainer/BtnStop
-@onready var _btn_rewind: Button = $VideoToolBar/HBoxContainer/BtnRewind
-@onready var _btn_forward: Button = $VideoToolBar/HBoxContainer/BtnForward
-@onready var _slider_playback: HSlider = $VideoToolBar/HBoxContainer/HSliderPlayback
-@onready var _btn_mute: Button = $VideoToolBar/HBoxContainer/BtnMute
-@onready var _slider_volume: HSlider = $VideoToolBar/HBoxContainer/HSliderVolume
-@onready var _btn_exit: Button = $VideoToolBar/HBoxContainer/BtnExit
+
+@onready var _btn_pause_and_play: Button = %BtnPauseAndPlay
+@onready var _btn_stop: Button = %BtnStop
+@onready var _btn_rewind: Button = %BtnRewind
+@onready var _btn_forward: Button = %BtnForward
+@onready var _slider_playback: HSlider = %HSliderPlayback
+@onready var _btn_mute: Button = %BtnMute
+@onready var _slider_volume: HSlider = %HSliderVolume
+@onready var _btn_exit: Button = %BtnExit
 
 enum ToolbarPosition { TOP, BOTTOM }
 
@@ -125,6 +127,12 @@ func _ready() -> void:
 
 	resized.connect(_apply_toolbar_layout)
 	_apply_toolbar_layout()
+	
+	_bar.visible = false
+	for b: Button in [_btn_pause_and_play, _btn_stop, _btn_rewind, _btn_forward, _btn_mute, _btn_exit]:
+		b.expand_icon = true # 图标随按钮尺寸缩放；不开的话按钮最小尺寸会被图标原始尺寸撑死
+		b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_connect_signals()
 
 func _process(delta: float) -> void:
 	if _video.is_playing() and not _video.paused and not _is_dragging:

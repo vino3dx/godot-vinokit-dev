@@ -2,10 +2,12 @@ class_name VinoConfigLoader
 extends Node
 ## VinoConfigLoader - 全局配置文件加载器
 ##
-## 建议 Autoload 挂载名称：VinoConfig
+## 建议 Autoload 挂载名称：VinoConfig（放在 Autoload 列表最上面，保证其他 Autoload 也能被注入）
 ## 1. 任意位置获取配置：VinoConfig.get_value("Section", "Key", default)
-## 2. 自动注入属性到节点：VinoConfig.bind(self)
-## 3. 可选传入注入完成后的回调函数；若未指定则自动查找节点上的 _apply_config() 方法
+## 2. 自动注入（默认开启，无需手动调用）：节点名 == ini 小节名 时，
+##    小节里的 key 会自动写入该节点脚本里同名的成员变量（局部变量无效）。
+##    注入发生在节点 _ready() 之前；节点上若有 _apply_config() 方法，会在节点 ready 后自动调用。
+## 3. 手动绑定（可选）：VinoConfig.bind(node, "自定义小节名", callback)，用于节点名与小节名不一致的情况
 ## 4. 已知名字的资源根目录：VinoConfig.get_root("assets") —— ini 里 [Paths] 配了 assets 就用配置值
 ##    （换目录、换盘符都不用改代码），没配就默认去 exe 同级目录下找 assets/ 文件夹，
 ##    找不到再回退包内 res://assets
@@ -15,9 +17,12 @@ extends Node
 
 signal config_loaded
 
+const BOUND_META := "_vino_config_bound" # 已注入标记，防止重复注入
+
 var config_file_path: String = "config.ini"
 var debug_print: bool = true
 var is_loaded: bool = false
+var auto_bind: bool = true # 是否自动遍历场景树并按 节点名==小节名 注入配置
 
 ## get_asset_root() 在 ini 未显式配置时依次探测的候选文件夹名，按优先级排列。
 ## 项目里习惯用别的名字（比如 Resources、StreamingAssets）可以直接在这里改，或者用
@@ -30,6 +35,9 @@ var _config := ConfigFile.new()
 ## 生命周期初始化
 func _ready() -> void:
 	_load()
+	if auto_bind:
+		get_tree().node_added.connect(_on_node_added)
+		_bind_tree(get_tree().root)
 
 
 ## 加载并解析配置文件
@@ -116,28 +124,56 @@ func _dir_really_exists(path: String) -> bool:
 	return DirAccess.dir_exists_absolute(path)
 
 
-## 自动绑定并注入配置到节点同名变量
+## 手动绑定并注入配置到节点同名变量（一般不需要，自动注入已覆盖大多数场景）
 ## section_name 为空时，默认匹配当前 node.name
 ## callback 可选传入注入完成后的回调函数；若未指定则自动查找节点上的 _apply_config() 方法
+## 若该节点已被自动注入过，且没有传入自定义小节名/回调，则直接跳过（兼容旧的 bind(self) 写法）
 func bind(node: Node, section_name: String = "", callback: Callable = Callable()) -> void:
-	var section := section_name if not section_name.is_empty() else node.name
+	if section_name.is_empty() and not callback.is_valid() and node.has_meta(BOUND_META):
+		return
+	var section := section_name if not section_name.is_empty() else String(node.name)
 	if not is_loaded:
 		config_loaded.connect(func(): _do_bind(node, section, callback), CONNECT_ONE_SHOT)
 		return
 	_do_bind(node, section, callback)
 
 
-## 执行具体的属性注入逻辑，并在完成后自动触发回调或约定方法
+## 内部：递归遍历子树，逐个尝试自动注入（处理配置加载时已在场景树里的节点）
+func _bind_tree(node: Node) -> void:
+	_auto_bind(node)
+	for child in node.get_children():
+		_bind_tree(child)
+
+
+## 内部：新节点进入场景树时触发（此时节点 _ready() 还没执行，注入的值能直接被 _ready() 使用）
+func _on_node_added(node: Node) -> void:
+	_auto_bind(node)
+
+
+## 内部：自动注入入口，按 节点名 匹配小节；已注入过或本身是 Loader 的节点跳过
+func _auto_bind(node: Node) -> void:
+	if node == self or not is_loaded or node.has_meta(BOUND_META):
+		return
+	_do_bind(node, String(node.name))
+
+
+## 执行具体的属性注入逻辑，并在节点 ready 后触发回调或约定方法 _apply_config()
 func _do_bind(node: Node, section: String, callback: Callable = Callable()) -> void:
 	if not is_instance_valid(node) or not has_section(section):
 		return
+	node.set_meta(BOUND_META, true)
 	for key in get_section_keys(section):
 		if key in node:
 			node.set(key, get_value(section, key))
-	if callback.is_valid():
-		callback.call()
-	elif node.has_method("_apply_config"):
-		node.call("_apply_config")
+	var done := callback
+	if not done.is_valid() and node.has_method("_apply_config"):
+		done = Callable(node, "_apply_config")
+	if not done.is_valid():
+		return
+	if node.is_node_ready():
+		done.call()
+	else:
+		node.ready.connect(done, CONNECT_ONE_SHOT)
 
 
 ## 获取配置项的值

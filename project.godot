@@ -13,7 +13,7 @@ config_version=5
 config/name="GodotVinoKit"
 config/description="基于Godot引擎开发的组件和插件库"
 config/tags=PackedStringArray("demo")
-run/main_scene="uid://c5y33cf4q821j"
+run/main_scene="res://addons/vinokit/modules/vino_video_player/video_player.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://b5pt8eyhh83e0"
@@ -27,9 +27,8 @@ VinoWindow="*uid://dim0wegwqd86"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-window/size/mode=3
+window/size/viewport_width=1720
+window/size/viewport_height=720
 window/size/borderless=true
 
 [editor_plugins]

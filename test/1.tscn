@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://c5y33cf4q821j"]
+[gd_scene format=3 uid="uid://cktjomnnxm6oa"]
 
-[ext_resource type="Script" uid="uid://bhkos8i1abau2" path="res://addons/vinokit/tools/vino_shader_converter.gd" id="1_vs7ol"]
+[ext_resource type="Script" uid="uid://bd33wgmypx2gl" path="res://addons/vinokit/tools/vino_zip_packer.gd" id="1_vs7ol"]
 
 [node name="Control" type="Control" unique_id=197360960]
 layout_mode = 3
@@ -10,7 +10,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VinoShaderConverter" type="Node" parent="." unique_id=859353390]
+[node name="VinoZipPacker" type="Node" parent="." unique_id=1350936366]
 script = ExtResource("1_vs7ol")
-source_file = "uid://cki5tvpviu5mu"
-metadata/_custom_type_script = "uid://bhkos8i1abau2"
+source_dir_path = "D:/Godot/godot-vinokit-dev/addons/vinokit"
+metadata/_custom_type_script = "uid://bd33wgmypx2gl"

@@ -4,6 +4,8 @@ Godot 4.x 通用底层工具集，各模块相互独立、按需使用。
 
 ## 目录结构
 
+端口用 50000~59999 作为私有端口号
+
 ```
 core/       配置 / 资产 / 数据加载、窗口控制（Autoload 单例，插件启用后自动注册）
 utils/      无状态静态工具函数库（math/string/array/node/dictionary/color），VinoXxx.func() 直接调用

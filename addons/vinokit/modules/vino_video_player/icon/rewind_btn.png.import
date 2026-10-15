@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4sxuw542stua"
-path="res://.godot/imported/#U524d#U8fdb_btn.png-abedb7397f5c83a587734d54919558af.ctex"
+uid="uid://da4xkhou151ag"
+path="res://.godot/imported/rewind_btn.png-b5b4fcddba71ef9805906ed4a3c75935.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/vinokit/modules/vino_video_player/icon/#U524d#U8fdb_btn.png"
-dest_files=["res://.godot/imported/#U524d#U8fdb_btn.png-abedb7397f5c83a587734d54919558af.ctex"]
+source_file="res://addons/vinokit/modules/vino_video_player/icon/rewind_btn.png"
+dest_files=["res://.godot/imported/rewind_btn.png-b5b4fcddba71ef9805906ed4a3c75935.ctex"]
 
 [params]
 

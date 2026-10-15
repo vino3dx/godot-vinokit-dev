@@ -188,7 +188,7 @@ nodes/fragment/2/node = SubResource("VisualShaderNodeExpression_ts4cp")
 nodes/fragment/2/position = Vector2(-300, -200)
 nodes/fragment/2/size = Vector2(420, 260)
 nodes/fragment/2/input_ports = "0,1,u_icon_type;1,5,u_icon_color;"
-nodes/fragment/2/output_ports = ""
+nodes/fragment/2/output_ports = "0,4,output0;"
 nodes/fragment/2/expression = "
 	vec2 p = UV - vec2(0.5);
 
@@ -226,7 +226,7 @@ nodes/fragment/2/expression = "
 	COLOR = vec4(u_icon_color.rgb, alpha * u_icon_color.a);
 "
 nodes/fragment/3/node = SubResource("VisualShaderNodeGlobalExpression_if2v3")
-nodes/fragment/3/position = Vector2(-300, -450)
+nodes/fragment/3/position = Vector2(-380, -460)
 nodes/fragment/3/size = Vector2(420, 200)
 nodes/fragment/3/input_ports = ""
 nodes/fragment/3/output_ports = ""
@@ -363,7 +363,7 @@ float icon_exit(vec2 p) {
 	return min(door, min(line, min(arrow1, arrow2)));
 }"
 nodes/fragment/4/node = SubResource("VisualShaderNodeIntParameter_c0nh2")
-nodes/fragment/4/position = Vector2(-700, -200)
+nodes/fragment/4/position = Vector2(-740, -280)
 nodes/fragment/5/node = SubResource("VisualShaderNodeColorParameter_3slma")
 nodes/fragment/5/position = Vector2(-700, -50)
-nodes/fragment/connections = PackedInt32Array(4, 0, 2, 0, 5, 0, 2, 1)
+nodes/fragment/connections = PackedInt32Array(4, 0, 2, 0, 5, 0, 2, 1, 2, 0, 0, 0)
