@@ -8,7 +8,7 @@ func _ready() -> void:
 	
 	$AudioStreamPlayer.stream = VinoAssets.load_audio("测试音频.mp3")
 	
-	$VideoStreamPlayer.stream = VinoAssets.load_video_stream("测试视频.mp4")
+	$VideoStreamPlayer.stream = VinoAssets.load_video("测试视频.mp4")
 
 func _on_button_pressed() -> void:
 	$AudioStreamPlayer.play()
